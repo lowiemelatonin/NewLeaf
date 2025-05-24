@@ -9,6 +9,20 @@ ASTNode *create_int_node(int value){
     return node;
 }
 
+ASTNode *create_float_node(float fvalue){
+    ASTNode *node = malloc(sizeof(ASTNode));
+    node->type = FLOAT_NODE;
+    node->fvalue = fvalue;
+    return node;
+}
+
+ASTNode *create_bool_node(int bvalue){
+    ASTNode *node = malloc(sizeof(ASTNode));
+    node->type = BOOL_NODE;
+    node->bvalue = bvalue ? 1 : 0;
+    return node;
+}
+
 ASTNode *create_assign_node(ASTNode *left, ASTNode *right){
     ASTNode *node = malloc(sizeof(ASTNode));
     node->type = ASSIGN_NODE;

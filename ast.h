@@ -3,6 +3,8 @@
 
 typedef enum {
     INT_NODE,
+    FLOAT_NODE,
+    BOOL_NODE,
     ASSIGN_NODE,
     VAR_NODE,
     BINARY_OP_NODE
@@ -13,6 +15,8 @@ typedef struct ASTNode {
     NodeType type;
     union {
         int value;
+        float fvalue;
+        int bvalue;
         char *var_name;
 
         struct {
@@ -29,6 +33,8 @@ typedef struct ASTNode {
 }ASTNode;
 
 ASTNode *create_int_node(int value);
+ASTNode *create_float_node(float value);
+ASTNode *create_bool_node(int bvalue);
 ASTNode *create_assign_node(ASTNode *left, ASTNode *right);
 ASTNode *create_var_node(const char *var_name);
 ASTNode *create_binary_op_node(ASTNode *left, ASTNode *right, const char *op);

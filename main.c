@@ -1,4 +1,5 @@
 #include "ast.h"
+#include "hashmap.h"
 
 int main(){
     ASTNode *var = create_var_node("x");
