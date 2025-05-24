@@ -1,2 +1,2 @@
 # NewLeaf 🍃
-A functional interpreted language, intended to understand how interpreters actually work
+A functional interpreted language to learn how interpreters actually work
