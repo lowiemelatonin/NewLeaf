@@ -23,6 +23,13 @@ ASTNode *create_bool_node(int bvalue){
     return node;
 }
 
+ASTNode *create_string_node(char *str){
+    ASTNode *node = malloc(sizeof(ASTNode));
+    node->type = STR_NODE;
+    node->str = strdup(str);
+    return node;
+}
+
 ASTNode *create_assign_node(ASTNode *left, ASTNode *right){
     ASTNode *node = malloc(sizeof(ASTNode));
     node->type = ASSIGN_NODE;
@@ -47,12 +54,31 @@ ASTNode *create_binary_op_node(ASTNode *left, ASTNode *right, const char *op){
     return node;
 }
 
+ASTNode *create_block_node(ASTNode **nodes, int count){
+    ASTNode *node = malloc(sizeof(ASTNode));
+    node->type = BLOCK_NODE;
+    node->Block.nodes = malloc(sizeof(ASTNode*) * count);
+    
+    for(int i = 0; i < count; i++){
+        node->Block.nodes[i] = nodes[i];
+    }
+    node->Block.count = count;
+    return node;
+}
+
 void free_ast(ASTNode *node){
     if(!node){
         return;
     }
     switch(node->type){
         case INT_NODE:
+            break;
+        case FLOAT_NODE:
+            break;
+        case BOOL_NODE:
+            break;
+        case STR_NODE:
+            free(node->str);
             break;
         case VAR_NODE:
             free(node->var_name);
@@ -65,6 +91,12 @@ void free_ast(ASTNode *node){
             free_ast(node->BinaryOp.left);
             free_ast(node->BinaryOp.right);
             free(node->BinaryOp.op);
+            break;
+        case BLOCK_NODE:
+            for(int i = 0; i < node->Block.count; i++){
+                free_ast(node->Block.nodes[i]);
+            }
+            free(node->Block.nodes);
             break;
         default:
             break;
