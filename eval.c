@@ -2,6 +2,22 @@
 #include <stdlib.h>
 #include <string.h>
 
+Value eval_unary_op(Value expr, const char *op){
+    if(expr.type == TYPE_INT){
+        if(strcmp(op, "!") == 0) return (Value){ .type = TYPE_INT, .data.i = !expr.data.i };
+        if(strcmp(op, "+") == 0) return (Value){ .type = TYPE_INT, .data.i = +expr.data.i };
+        if(strcmp(op, "-") == 0) return (Value){ .type = TYPE_INT, .data.i = -expr.data.i };
+    }
+    if(expr.type == FLOAT_NODE){
+        if(strcmp(op, "!") == 0) return (Value){ .type = FLOAT_NODE, .data.f = !expr.data.f };
+        if(strcmp(op, "+") == 0) return (Value){ .type = FLOAT_NODE, .data.f = +expr.data.f };
+        if(strcmp(op, "-") == 0) return (Value){ .type = FLOAT_NODE, .data.f = -expr.data.f };
+    }
+    if(expr.type == BOOL_NODE){
+        if(strcmp(op, "!") == 0) return (Value){ .type = FLOAT_NODE, .data.i = !expr.data.i };
+    }
+}
+
 Value eval_binary_op(Value left, Value right, const char *op){
     if(left.type == TYPE_FLOAT && right.type == TYPE_INT){
         right.data.f = (float)right.data.i;
@@ -92,21 +108,31 @@ Value eval(ASTNode *node, HashMap *env){
         case ASSIGN_NODE: {
             ASTNode *left = node->Assign.left;
             ASTNode *right = node->Assign.right;
-            Value rval = eval(right, env);
+            Value rval;
             if (left->type != VAR_NODE) {
                 exit(1);
             }
+
+            if(right->type == BINARY_OP_NODE && right->BinaryOp.left->type == VAR_NODE && strcmp(right->BinaryOp.left->var_name, left->var_name) == 0){
+                Value lval = eval(left, env);
+                Value rval_right = eval(right->BinaryOp.right, env);
+                rval = eval_binary_op(lval, rval_right, right->BinaryOp.op);
+            } else {
+                rval = eval(right, env);
+            }
             insert_value(env, left->var_name, rval);
             return rval;
+        }
+        case UNARY_OP_NODE: {
+            Value expr = eval(node->UnaryOp.expr, env);
+            const char *op = node->UnaryOp.op;
+            return eval_unary_op(expr, op);
         }
         case BINARY_OP_NODE: {
             Value left = eval(node->BinaryOp.left, env);
             Value right = eval(node->BinaryOp.right, env);
             const char *op = node->BinaryOp.op;
-            if(left.type == right.type){
-                return eval_binary_op(left, right, op);
-            }
-            exit(1);
+            return eval_binary_op(left, right, op);
         }
         default:
             break;

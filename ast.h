@@ -8,6 +8,7 @@ typedef enum {
     STR_NODE,
     ASSIGN_NODE,
     VAR_NODE,
+    UNARY_OP_NODE,
     BINARY_OP_NODE,
     BLOCK_NODE
 } NodeType;
@@ -26,6 +27,11 @@ typedef struct ASTNode {
             ASTNode *left;
             ASTNode *right;
         } Assign;
+
+        struct {
+            ASTNode *expr;
+            char *op;
+        } UnaryOp;
 
         struct {
             ASTNode *left;
@@ -47,6 +53,7 @@ ASTNode *create_bool_node(int bvalue);
 ASTNode *create_string_node(char *str);
 ASTNode *create_assign_node(ASTNode *left, ASTNode *right);
 ASTNode *create_var_node(const char *var_name);
+ASTNode *create_unary_op_node(ASTNode *expr, const char *op);
 ASTNode *create_binary_op_node(ASTNode *left, ASTNode *right, const char *op);
 ASTNode *create_block_node(ASTNode **nodes, int count);
 

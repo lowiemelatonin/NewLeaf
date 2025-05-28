@@ -45,6 +45,14 @@ ASTNode *create_var_node(const char *var_name){
     return node;
 }
 
+ASTNode *create_unary_op_node(ASTNode *expr, const char *op){
+    ASTNode *node = malloc(sizeof(ASTNode));
+    node->type = UNARY_OP_NODE;
+    node->UnaryOp.expr = expr;
+    node->UnaryOp.op = strdup(op);
+    return node;
+}
+
 ASTNode *create_binary_op_node(ASTNode *left, ASTNode *right, const char *op){
     ASTNode *node = malloc(sizeof(ASTNode));
     node->type = BINARY_OP_NODE;
