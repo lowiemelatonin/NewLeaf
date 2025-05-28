@@ -2,7 +2,18 @@
 #include <stdlib.h>
 #include <string.h>
 
-Value eval_same_type_binary(Value left, Value right, const char *op){
+Value eval_binary_op(Value left, Value right, const char *op){
+    if(left.type == TYPE_FLOAT && right.type == TYPE_INT){
+        right.data.f = (float)right.data.i;
+        right.type = TYPE_FLOAT;
+    } else if(left.type == TYPE_INT && right.type == TYPE_FLOAT){
+        left.data.f = (float)left.data.i;
+        left.type = TYPE_FLOAT;
+    }
+    if((left.type == TYPE_STRING && right.type != TYPE_STRING) || (right.type == TYPE_STRING && left.type != TYPE_STRING)){
+        exit(1);
+    }
+
     switch(left.type){
         case TYPE_INT:
             if(strcmp(op, "+") == 0) return (Value){.type = TYPE_INT, .data.i = left.data.i + right.data.i};
@@ -29,6 +40,12 @@ Value eval_same_type_binary(Value left, Value right, const char *op){
         case TYPE_BOOL:
             if(strcmp(op, "&&") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.i && right.data.i};
             if(strcmp(op, "||") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.i || right.data.i};
+            if(strcmp(op, "==") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.i == right.data.i};
+            if(strcmp(op, "!=") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.i != right.data.i};
+            if(strcmp(op, ">") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.i > right.data.i};
+            if(strcmp(op, "<") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.i < right.data.i};
+            if(strcmp(op, ">=") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.i >= right.data.i};
+            if(strcmp(op, "<=") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.i <= right.data.i};
             break;
         case TYPE_STRING:
             if(strcmp(op, "+") == 0){
@@ -38,6 +55,8 @@ Value eval_same_type_binary(Value left, Value right, const char *op){
                 strcat(result, right.data.s);
                 return (Value){.type = TYPE_STRING, .data.s = result};
             }
+            if(strcmp(op, "==") == 0) return (Value){.type = TYPE_BOOL, .data.i = strcmp(left.data.s, right.data.s) == 0};
+            if(strcmp(op, "!=") == 0) return (Value){.type = TYPE_BOOL, .data.i = strcmp(left.data.s, right.data.s) != 0};
             break;
         default:
             break;
@@ -85,7 +104,7 @@ Value eval(ASTNode *node, HashMap *env){
             Value right = eval(node->BinaryOp.right, env);
             const char *op = node->BinaryOp.op;
             if(left.type == right.type){
-                return eval_same_type_binary(left, right, op);
+                return eval_binary_op(left, right, op);
             }
             exit(1);
         }

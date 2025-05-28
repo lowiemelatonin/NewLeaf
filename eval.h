@@ -4,7 +4,7 @@
 #include "ast.h"
 #include "hashmap.h"
 
-Value eval_same_type_binary(Value left, Value right, const char *op);
+Value eval_binary_op(Value left, Value right, const char *op);
 Value eval(ASTNode *node, HashMap *env);
 
 #endif
