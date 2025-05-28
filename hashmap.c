@@ -73,14 +73,8 @@ void resize(HashMap *map){
         while(entry){
             Entry *next = entry->next;
             Value val = entry->value;
-            if(val.type == TYPE_STRING){
-                val.data.s = strdup(val.data.s);
-            }
             insert_value(map, entry->key, val);
             free(entry->key);
-            if(entry->value.type == TYPE_STRING){
-                free(entry->value.data.s);
-            }
             free(entry);
             entry = next;
         }
