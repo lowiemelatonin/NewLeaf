@@ -1,5 +1,5 @@
-#ifndef HASH_H
-#define HASH_H
+#ifndef HASHMAP_H
+#define HASHMAP_H
 
 typedef enum {
     TYPE_INT,

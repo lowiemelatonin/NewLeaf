@@ -8,14 +8,15 @@ Value eval_unary_op(Value expr, const char *op){
         if(strcmp(op, "+") == 0) return (Value){ .type = TYPE_INT, .data.i = +expr.data.i };
         if(strcmp(op, "-") == 0) return (Value){ .type = TYPE_INT, .data.i = -expr.data.i };
     }
-    if(expr.type == FLOAT_NODE){
-        if(strcmp(op, "!") == 0) return (Value){ .type = FLOAT_NODE, .data.f = !expr.data.f };
-        if(strcmp(op, "+") == 0) return (Value){ .type = FLOAT_NODE, .data.f = +expr.data.f };
-        if(strcmp(op, "-") == 0) return (Value){ .type = FLOAT_NODE, .data.f = -expr.data.f };
+    if(expr.type == TYPE_FLOAT){
+        if(strcmp(op, "!") == 0) return (Value){ .type = TYPE_FLOAT, .data.f = !expr.data.f };
+        if(strcmp(op, "+") == 0) return (Value){ .type = TYPE_FLOAT, .data.f = +expr.data.f };
+        if(strcmp(op, "-") == 0) return (Value){ .type = TYPE_FLOAT, .data.f = -expr.data.f };
     }
-    if(expr.type == BOOL_NODE){
-        if(strcmp(op, "!") == 0) return (Value){ .type = FLOAT_NODE, .data.i = !expr.data.i };
+    if(expr.type == TYPE_BOOL){
+        if(strcmp(op, "!") == 0) return (Value){ .type = TYPE_BOOL, .data.i = !expr.data.i };
     }
+    exit(1);
 }
 
 Value eval_binary_op(Value left, Value right, const char *op){

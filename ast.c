@@ -95,6 +95,10 @@ void free_ast(ASTNode *node){
             free_ast(node->Assign.left);
             free_ast(node->Assign.right);
             break;
+        case UNARY_OP_NODE:
+            free_ast(node->UnaryOp.expr);
+            free(node->UnaryOp.op);
+            break;
         case BINARY_OP_NODE:
             free_ast(node->BinaryOp.left);
             free_ast(node->BinaryOp.right);
