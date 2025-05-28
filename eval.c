@@ -97,6 +97,7 @@ Value eval(ASTNode *node, HashMap *env){
         }
         case STR_NODE: {
             Value val = {.type = TYPE_STRING, .data.s = strdup(node->str)};
+
             return val;
         }
         case VAR_NODE: {
