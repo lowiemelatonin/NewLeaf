@@ -97,7 +97,6 @@ Value eval(ASTNode *node, HashMap *env){
         }
         case STR_NODE: {
             Value val = {.type = TYPE_STRING, .data.s = strdup(node->str)};
-
             return val;
         }
         case VAR_NODE: {
@@ -135,6 +134,13 @@ Value eval(ASTNode *node, HashMap *env){
             Value right = eval(node->BinaryOp.right, env);
             const char *op = node->BinaryOp.op;
             return eval_binary_op(left, right, op);
+        }
+        case BLOCK_NODE: {
+            Value result;
+            for(int i = 0; i < node->Block.count; i++){
+                result = eval(node->Block.nodes[i], env);
+            }
+            return result;
         }
         default:
             break;
