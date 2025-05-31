@@ -42,6 +42,14 @@ Value eval_binary_op(Value left, Value right, const char *op){
                 }
                 return (Value){.type = TYPE_INT, .data.i = left.data.i / right.data.i};
             } 
+            if(strcmp(op, "&&") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.i && right.data.i};
+            if(strcmp(op, "||") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.i || right.data.i};
+            if(strcmp(op, "==") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.i == right.data.i};
+            if(strcmp(op, "!=") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.i != right.data.i};
+            if(strcmp(op, ">") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.i > right.data.i};
+            if(strcmp(op, "<") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.i < right.data.i};
+            if(strcmp(op, ">=") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.i >= right.data.i};
+            if(strcmp(op, "<=") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.i <= right.data.i};
             break;
         case TYPE_FLOAT:
             if(strcmp(op, "+") == 0) return (Value){.type = TYPE_FLOAT, .data.f = left.data.f + right.data.f};
@@ -53,16 +61,20 @@ Value eval_binary_op(Value left, Value right, const char *op){
                 }
                 return (Value){.type = TYPE_FLOAT, .data.f = left.data.f / right.data.f};
             } 
+            if(strcmp(op, "&&") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.f && right.data.f};
+            if(strcmp(op, "||") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.f || right.data.f};
+            if(strcmp(op, "==") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.f == right.data.f};
+            if(strcmp(op, "!=") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.f != right.data.f};
+            if(strcmp(op, ">") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.f > right.data.f};
+            if(strcmp(op, "<") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.f < right.data.f};
+            if(strcmp(op, ">=") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.f >= right.data.f};
+            if(strcmp(op, "<=") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.f <= right.data.f};
             break;
         case TYPE_BOOL:
             if(strcmp(op, "&&") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.i && right.data.i};
             if(strcmp(op, "||") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.i || right.data.i};
             if(strcmp(op, "==") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.i == right.data.i};
             if(strcmp(op, "!=") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.i != right.data.i};
-            if(strcmp(op, ">") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.i > right.data.i};
-            if(strcmp(op, "<") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.i < right.data.i};
-            if(strcmp(op, ">=") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.i >= right.data.i};
-            if(strcmp(op, "<=") == 0) return (Value){.type = TYPE_BOOL, .data.i = left.data.i <= right.data.i};
             break;
         case TYPE_STRING:
             if(strcmp(op, "+") == 0){
