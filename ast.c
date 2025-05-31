@@ -83,6 +83,23 @@ ASTNode *create_if_else_node(ASTNode *cond, ASTNode *then_block, ASTNode *else_b
     return node;
 }
 
+ASTNode *create_while_node(ASTNode *cond, ASTNode *body){
+    ASTNode *node = malloc(sizeof(ASTNode));
+    node->type = WHILE_NODE;
+    node->While.cond = cond;
+    node->While.body = body;
+    return node;
+}
+
+ASTNode *create_for_node(ASTNode *init, ASTNode *cond, ASTNode *incr, ASTNode *body){
+    ASTNode *node = malloc(sizeof(ASTNode));
+    node->type = FOR_NODE;
+    node->For.init = init;
+    node->For.cond = cond;
+    node->For.incr = incr;
+    node->For.body = body;
+    return node;
+}
 
 void free_ast(ASTNode *node){
     if(!node){
@@ -126,6 +143,16 @@ void free_ast(ASTNode *node){
             if (node->IfElse.else_block) {
                 free_ast(node->IfElse.else_block);
             }
+            break;
+        case WHILE_NODE:
+            free_ast(node->While.cond);
+            free_ast(node->While.body);
+            break;
+        case FOR_NODE:
+            free_ast(node->For.init);
+            free_ast(node->For.cond);
+            free_ast(node->For.incr);
+            free_ast(node->For.body);
             break;
         default:
             break;

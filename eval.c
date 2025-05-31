@@ -166,6 +166,36 @@ Value eval(ASTNode *node, HashMap *env){
             }
             return (Value){.type = TYPE_INT, .data.i = 0};
         }
+        case WHILE_NODE: {
+            Value cond_val = eval(node->While.cond, env);
+            while(1){
+                cond_val = eval(node->While.cond, env);
+                if(cond_val.type != TYPE_BOOL){
+                    exit(1);
+                }
+                if(!cond_val.data.i){
+                    break;
+                }
+                eval(node->While.body, env);
+            }
+            return (Value){.type = TYPE_INT, .data.i = 0};
+        }
+        case FOR_NODE: {
+            eval(node->For.init, env);
+            Value cond_val;
+            while(1){
+                cond_val = eval(node->For.cond, env);
+                if(cond_val.type != TYPE_BOOL){
+                    exit(1);
+                }
+                if(!cond_val.data.i){
+                    break;
+                }
+                eval(node->For.body, env);
+                eval(node->For.incr, env);
+            }
+            return (Value){.type = TYPE_INT, .data.i = 0};
+        }
         default:
             break;
     }
