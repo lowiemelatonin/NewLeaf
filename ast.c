@@ -74,6 +74,16 @@ ASTNode *create_block_node(ASTNode **nodes, int count){
     return node;
 }
 
+ASTNode *create_if_else_node(ASTNode *cond, ASTNode *then_block, ASTNode *else_block) {
+    ASTNode *node = malloc(sizeof(ASTNode));
+    node->type = IF_ELSE_NODE;
+    node->IfElse.cond = cond;
+    node->IfElse.then_block = then_block;
+    node->IfElse.else_block = else_block;
+    return node;
+}
+
+
 void free_ast(ASTNode *node){
     if(!node){
         return;
@@ -109,6 +119,13 @@ void free_ast(ASTNode *node){
                 free_ast(node->Block.nodes[i]);
             }
             free(node->Block.nodes);
+            break;
+        case IF_ELSE_NODE:
+            free_ast(node->IfElse.cond);
+            free_ast(node->IfElse.then_block);
+            if (node->IfElse.else_block) {
+                free_ast(node->IfElse.else_block);
+            }
             break;
         default:
             break;

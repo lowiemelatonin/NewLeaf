@@ -10,7 +10,8 @@ typedef enum {
     VAR_NODE,
     UNARY_OP_NODE,
     BINARY_OP_NODE,
-    BLOCK_NODE
+    BLOCK_NODE,
+    IF_ELSE_NODE
 } NodeType;
 
 typedef struct ASTNode ASTNode;
@@ -43,7 +44,12 @@ typedef struct ASTNode {
             ASTNode **nodes;
             int count;
         } Block;
-        
+
+        struct {
+            ASTNode *cond;
+            ASTNode *then_block;
+            ASTNode *else_block;
+        } IfElse;
     };
 } ASTNode;
 
@@ -56,6 +62,7 @@ ASTNode *create_var_node(const char *var_name);
 ASTNode *create_unary_op_node(ASTNode *expr, const char *op);
 ASTNode *create_binary_op_node(ASTNode *left, ASTNode *right, const char *op);
 ASTNode *create_block_node(ASTNode **nodes, int count);
+ASTNode *create_if_else_node(ASTNode *cond, ASTNode *then_block, ASTNode *else_block);
 
 void free_ast(ASTNode *node);
 

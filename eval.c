@@ -154,6 +154,18 @@ Value eval(ASTNode *node, HashMap *env){
             }
             return result;
         }
+        case IF_ELSE_NODE: {
+            Value cond_val = eval(node->IfElse.cond, env);
+            if (cond_val.type != TYPE_BOOL) {
+                exit(1);
+            }
+            if (cond_val.data.i) {
+                return eval(node->IfElse.then_block, env);
+            } else if (node->IfElse.else_block) {
+                return eval(node->IfElse.else_block, env);
+            }
+            return (Value){.type = TYPE_INT, .data.i = 0};
+        }
         default:
             break;
     }
