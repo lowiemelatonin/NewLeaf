@@ -13,7 +13,8 @@ typedef enum {
     BLOCK_NODE,
     IF_ELSE_NODE,
     WHILE_NODE,
-    FOR_NODE
+    FOR_NODE,
+    DO_WHILE_NODE
 } NodeType;
 
 typedef struct ASTNode ASTNode;
@@ -64,6 +65,11 @@ typedef struct ASTNode {
             ASTNode *incr;
             ASTNode *body;
         } For;
+
+        struct {
+            ASTNode *body;
+            ASTNode *cond;
+        } DoWhile;
     };
 } ASTNode;
 
@@ -79,6 +85,7 @@ ASTNode *create_block_node(ASTNode **nodes, int count);
 ASTNode *create_if_else_node(ASTNode *cond, ASTNode *then_block, ASTNode *else_block);
 ASTNode *create_while_node(ASTNode *cond, ASTNode *body);
 ASTNode *create_for_node(ASTNode *init, ASTNode *cond, ASTNode *incr, ASTNode *body);
+ASTNode *create_do_while_node(ASTNode *body, ASTNode *cond);
 
 void free_ast(ASTNode *node);
 

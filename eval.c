@@ -196,6 +196,20 @@ Value eval(ASTNode *node, HashMap *env){
             }
             return (Value){.type = TYPE_INT, .data.i = 0};
         }
+        case DO_WHILE_NODE: {
+            Value result;
+            do {
+                result = eval(node->DoWhile.body, env);
+                Value cond_val = eval(node->DoWhile.cond, env);
+                if(cond_val.type != TYPE_BOOL){
+                    exit(1);
+                }
+                if(!cond_val.data.i){
+                    break;
+                }
+            } while (1);
+            return result;
+        }
         default:
             break;
     }

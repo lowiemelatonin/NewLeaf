@@ -101,6 +101,14 @@ ASTNode *create_for_node(ASTNode *init, ASTNode *cond, ASTNode *incr, ASTNode *b
     return node;
 }
 
+ASTNode *create_do_while_node(ASTNode *body, ASTNode *cond){
+    ASTNode *node = malloc(sizeof(ASTNode));
+    node->type = DO_WHILE_NODE;
+    node->DoWhile.body = body;
+    node->DoWhile.cond = cond;
+    return node;
+}
+
 void free_ast(ASTNode *node){
     if(!node){
         return;
@@ -153,6 +161,10 @@ void free_ast(ASTNode *node){
             free_ast(node->For.cond);
             free_ast(node->For.incr);
             free_ast(node->For.body);
+            break;
+        case DO_WHILE_NODE:
+            free_ast(node->DoWhile.body);
+            free_ast(node->DoWhile.cond);
             break;
         default:
             break;
