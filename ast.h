@@ -6,6 +6,8 @@ typedef enum {
     BINARY_OPERATION_NODE
 } NodeType;
 
+struct ASTNode;
+
 typedef struct ASTNode {
     NodeType type;
     union {
