@@ -1,10 +1,14 @@
 #ifndef AST_H
 #define AST_H
 
+#include <stdbool.h>
+
 typedef enum {
     IDENTIFIER_NODE,
     ASSIGNMENT_NODE,
+    DECLARATION_NODE,
 
+    BOOL_NODE,
     SHORT_NODE,
     UNSIGNED_SHORT_NODE,
     INT_NODE,
@@ -15,6 +19,7 @@ typedef enum {
     UNSIGNED_LONG_LONG_NODE,
     FLOAT_NODE,
     DOUBLE_NODE,
+    LONG_DOUBLE_NODE,
     SIGNED_CHAR_NODE,
     CHAR_NODE,
     UNSIGNED_CHAR_NODE,
@@ -22,9 +27,22 @@ typedef enum {
     POINTER_NODE,
     VOID_NODE,
 
+    ARRAY_NODE,
+    STRUCT_NODE,
+    UNION_NODE,
+    ENUM_NODE,
+    TYPEDEF_NODE,
+
+    FUNCTION_NODE,
+    RETURN_NODE,
+    FUNCTION_CALL_NODE,
+    IMPL_NODE,
+
     UNARY_OPERATION_NODE,
     BINARY_OPERATION_NODE,
-    TERNARY_OPERATION_NODE
+    TERNARY_OPERATION_NODE,
+
+    BLOCK_NODE
 
 } NodeType;
 
@@ -41,6 +59,16 @@ typedef struct ASTNode {
             ASTNode *left;
             ASTNode *right;
         } assignment;
+
+        struct {
+            ASTNode *varType;
+            char *varName;
+            ASTNode *initializer;
+        } declaration;
+
+        struct {
+            bool value;
+        } boolLiteral;
 
         struct {
             short value;
@@ -83,6 +111,10 @@ typedef struct ASTNode {
         } doubleLiteral;
 
         struct {
+            long double value; 
+        } longDoubleLiteral;
+
+        struct {
             signed char value;
         } signedCharLiteral;
 
@@ -101,6 +133,60 @@ typedef struct ASTNode {
         struct {
             ASTNode *ptr;
         } pointer;
+                
+        struct {
+            ASTNode *typeOfElement;
+            ASTNode *size;
+        } array;
+                
+        struct {
+            char *name;
+            ASTNode **fields;
+            int fieldsCount;
+        } structDef;
+                
+        struct {
+            char *name;
+            ASTNode **fields;
+            int fieldsCount;
+        } unionDef;
+                
+        struct {
+            char *name;
+            char **values;
+            int *intValues;
+            int valuesCount;
+        } enumDef;
+                
+        struct {
+            char *alias;
+            ASTNode *original;
+        } typedefDef;
+
+        struct {
+            char *structName;
+            ASTNode **methods;
+            int methodsCount;
+        } implDef;
+        
+        struct {
+            char *name;
+            ASTNode *returnType;
+            ASTNode **params;
+            int paramCount;
+            ASTNode **body;
+            int bodyCount;
+        } functionDef;
+        
+        struct {
+            ASTNode *value;
+        } returnStmt;
+
+        struct {
+            ASTNode *function;
+            ASTNode **args;
+            int argsCount;
+        } functionCall;
         
         struct {
             ASTNode *expr;
@@ -119,6 +205,11 @@ typedef struct ASTNode {
             ASTNode *false_expr;
         } ternaryOp;
 
+        struct {
+            ASTNode **statements;
+            int stmtCount;
+        } block;
+        
     };
 
 } ASTNode;
