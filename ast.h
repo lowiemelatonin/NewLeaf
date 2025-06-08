@@ -38,11 +38,33 @@ typedef enum {
     FUNCTION_CALL_NODE,
     IMPL_NODE,
 
+    MALLOC_NODE,
+    CALLOC_NODE,
+    REALLOC_NODE,
+    FREE_NODE,
+
     UNARY_OPERATION_NODE,
     BINARY_OPERATION_NODE,
     TERNARY_OPERATION_NODE,
 
-    BLOCK_NODE
+    BLOCK_NODE,
+    COMPOUND_EXPR_NODE,
+
+    IF_NODE,
+    SWITCH_NODE,
+    CASE_NODE,
+    DEFAULT_NODE,
+
+    WHILE_NODE,
+    DO_WHILE_NODE,
+    FOR_NODE,
+
+    BREAK_NODE,
+    CONTINUE_NODE,
+
+    TRY_NODE,
+    CATCH_NODE,
+    THROW_NODE
 
 } NodeType;
 
@@ -187,7 +209,25 @@ typedef struct ASTNode {
             ASTNode **args;
             int argsCount;
         } functionCall;
-        
+
+        struct {
+            ASTNode *sizeExpr;
+        } mallocExpr;
+
+        struct {
+            ASTNode *num;
+            ASTNode *size;
+        } callocExpr;
+
+        struct {
+            ASTNode *ptr;
+            ASTNode *sizeExpr;
+        } reallocExpr;
+
+        struct {
+            ASTNode *ptr;
+        } freeExpr;
+
         struct {
             ASTNode *expr;
             char *op;
@@ -209,6 +249,71 @@ typedef struct ASTNode {
             ASTNode **statements;
             int stmtCount;
         } block;
+
+        struct {
+            ASTNode **statements;
+            int stmtCount;
+        } compoundExpr;
+
+        struct {
+            ASTNode *condition;
+            ASTNode *thenBranch;
+            ASTNode *elseBranch;
+        } ifStmt;
+
+        struct {
+            ASTNode *expr;
+            ASTNode **cases;
+            int caseCount;
+        } switchStmt; 
+
+        struct {
+            ASTNode *value;
+            ASTNode **body;
+            int bodyCount;
+        } caseStmt;
+        
+        struct {
+            ASTNode **body;
+            int bodyCount;
+        } defaultStmt;
+        
+        struct {
+            ASTNode *condition;
+            ASTNode **body;
+            int bodyCount;
+        } whileStmt;
+        
+        struct {
+            ASTNode **body;
+            int bodyCount;
+            ASTNode *condition;
+        } doWhileStmt;
+
+        struct {
+            ASTNode *initializer;
+            ASTNode *condition;
+            ASTNode *increment;
+            ASTNode **body;
+            int bodyCount;
+        } forStmt;
+
+        struct {
+            ASTNode **tryBlock;
+            int tryBlockCount;
+            ASTNode **catchBlocks;
+            int catchCount;
+        } tryStmt;
+
+        struct {
+            char *exceptionVarName;
+            ASTNode **body;
+            int bodyCount;
+        } catchStmt;
+
+        struct {
+            ASTNode *exceptionExpr;
+        } throwStmt;
         
     };
 
