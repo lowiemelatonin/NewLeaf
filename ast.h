@@ -26,6 +26,7 @@ typedef enum {
     STRING_NODE,
     POINTER_NODE,
     VOID_NODE,
+    NULL_NODE,
 
     ARRAY_NODE,
     STRUCT_NODE,
@@ -68,7 +69,7 @@ typedef enum {
 
 } NodeType;
 
-struct ASTNode;
+typedef struct ASTNode ASTNode;
 
 typedef struct ASTNode {
     NodeType type;
@@ -318,5 +319,9 @@ typedef struct ASTNode {
     };
 
 } ASTNode;
+
+ASTNode *createIdentifierNode(const char *name);
+ASTNode *createAssignmentNode(ASTNode *left, ASTNode *right);
+ASTNode *createDeclarationNode(ASTNode *varType, const char *varName, ASTNode *initializer);
 
 #endif
