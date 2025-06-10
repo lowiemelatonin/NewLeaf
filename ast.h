@@ -4,6 +4,49 @@
 #include <stdbool.h>
 
 typedef enum {
+    POSITIVE_UNOP,
+    NEGATIVE_UNOP,
+    NOT_UNOP,
+    BIT_NOT_UNOP,
+
+    PRE_INCREMENT_UNOP,
+    POST_INCREMENT_UNOP,
+    PRE_DECREMENT_UNOP,
+    POST_DECREMENT_UNOP,
+
+    DEFERENCE_UNOP,
+    ADDRESS_OF_UNOP,
+    SIZE_OF_UNOP
+} UnaryOpType;
+
+typedef enum {
+    ADD_BINOP,
+    SUB_BINOP,
+    MUL_BINOP,
+    DIV_BINOP,
+    MOD_BINOP,
+
+    AND_BINOP,
+    OR_BINOP,
+
+    BIT_AND_BINOP,
+    BIT_OR_BINOP,
+    BIT_XOR_BINOP,
+
+    SHIFT_LEFT_BINOP,
+    SHIFT_RIGHT_BINOP,
+
+    EQU_BINOP,
+    NOT_EQU_BINOP,
+    LESS_BINOP,
+    LESS_EQU_BINOP,
+    GREATER_BINOP,
+    GREATER_EQU_BINOP,
+
+    COMMA_BINOP
+} BinaryOpType;
+
+typedef enum {
     IDENTIFIER_NODE,
     ASSIGNMENT_NODE,
     DECLARATION_NODE,
@@ -39,6 +82,9 @@ typedef enum {
     FUNCTION_CALL_NODE,
     IMPL_NODE,
 
+    LABEL_NODE,
+    JUMP_NODE,
+
     MALLOC_NODE,
     CALLOC_NODE,
     REALLOC_NODE,
@@ -50,6 +96,7 @@ typedef enum {
 
     BLOCK_NODE,
     COMPOUND_EXPR_NODE,
+    CAST_EXPR_NODE,
 
     IF_NODE,
     SWITCH_NODE,
@@ -193,6 +240,17 @@ typedef struct ASTNode {
         } implDef;
         
         struct {
+            ASTNode *array;
+            ASTNode *index;
+        } arrayAccess;
+
+        struct {
+            ASTNode *object;
+            char *fieldName;
+            bool isPointerAccess;
+        } fieldAccess;
+        
+        struct {
             char *name;
             ASTNode *returnType;
             ASTNode **params;
@@ -210,6 +268,14 @@ typedef struct ASTNode {
             ASTNode **args;
             int argsCount;
         } functionCall;
+
+        struct {
+            char *labelName;
+        } labelStmt;
+
+        struct {
+            char *labelName;
+        } jumpStmt;
 
         struct {
             ASTNode *sizeExpr;
@@ -231,19 +297,19 @@ typedef struct ASTNode {
 
         struct {
             ASTNode *expr;
-            char *op;
+            UnaryOpType op;
         } unaryOp;
         
         struct {
             ASTNode *left;
             ASTNode *right;
-            char *op;
+            BinaryOpType op;
         } binaryOp;
 
         struct {
             ASTNode *condition;
-            ASTNode *true_expr;
-            ASTNode *false_expr;
+            ASTNode *trueExpr;
+            ASTNode *falseExpr;
         } ternaryOp;
 
         struct {
@@ -255,6 +321,11 @@ typedef struct ASTNode {
             ASTNode **statements;
             int stmtCount;
         } compoundExpr;
+
+        struct {
+            ASTNode *targetType;
+            ASTNode *value;
+        } castExpr;
 
         struct {
             ASTNode *condition;
