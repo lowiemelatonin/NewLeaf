@@ -18,7 +18,6 @@ ASTNode *createAssignmentNode(ASTNode *left, ASTNode *right){
     node->type = ASSIGNMENT_NODE;
     node->assignment.left = left;
     node->assignment.right = right;
-
     return node;
 }
 
