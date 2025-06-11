@@ -1,6 +1,7 @@
 #include <ast.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 ASTNode *createIdentifierNode(const char *name){
     ASTNode *node = malloc(sizeof(ASTNode));
@@ -29,5 +30,32 @@ ASTNode *createDeclarationNode(ASTNode *varType, const char *varName, ASTNode *i
     node->declaration.varType = varType;
     node->declaration.varName = strdup(varName);
     node->declaration.initializer = initializer;
+    return node;
+}
+
+ASTNode *createBoolNode(bool value){
+    ASTNode *node = malloc(sizeof(ASTNode));
+    if(!node) return NULL;
+
+    node->type = BOOL_NODE;
+    node->boolLiteral.value = value;
+    return node;
+}
+
+ASTNode *createShortNode(short value){
+    ASTNode *node = malloc(sizeof(ASTNode));
+    if(!node) return NULL;
+
+    node->type = SHORT_NODE;
+    node->shortLiteral.value = value;
+    return node;
+}
+
+ASTNode *createUnsignedShortNode(unsigned short value){
+    ASTNode *node = malloc(sizeof(ASTNode));
+    if(!node) return NULL;
+
+    node->type = UNSIGNED_SHORT_NODE;
+    node->unsignedShortLiteral.value = value;
     return node;
 }

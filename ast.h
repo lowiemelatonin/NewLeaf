@@ -394,5 +394,8 @@ typedef struct ASTNode {
 ASTNode *createIdentifierNode(const char *name);
 ASTNode *createAssignmentNode(ASTNode *left, ASTNode *right);
 ASTNode *createDeclarationNode(ASTNode *varType, const char *varName, ASTNode *initializer);
+ASTNode *createBoolNode(bool value);
+ASTNode *createShortNode(short value);
+ASTNode *createUnsignedShortNode(unsigned short value);
 
 #endif
