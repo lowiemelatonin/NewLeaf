@@ -59,3 +59,21 @@ ASTNode *createUnsignedShortNode(unsigned short value){
     node->unsignedShortLiteral.value = value;
     return node;
 }
+
+ASTNode *createIntLiteralNode(int value){
+    ASTNode *node = malloc(sizeof(ASTNode));
+    if(!node) return NULL;
+
+    node->type = INT_NODE;
+    node->intLiteral.value = value;
+    return node;
+}
+
+ASTNode *createUnsignedIntLiteralNode(unsigned int value){
+    ASTNode *node = malloc(sizeof(ASTNode));
+    if(!node) return NULL;
+
+    node->type = UNSIGNED_INT_NODE;
+    node->unsignedIntLiteral.value = value;
+    return node;
+}

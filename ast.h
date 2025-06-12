@@ -397,5 +397,7 @@ ASTNode *createDeclarationNode(ASTNode *varType, const char *varName, ASTNode *i
 ASTNode *createBoolNode(bool value);
 ASTNode *createShortNode(short value);
 ASTNode *createUnsignedShortNode(unsigned short value);
+ASTNode *createIntLiteralNode(int value);
+ASTNode *createUnsignedIntLiteralNode(unsigned int value);
 
 #endif
