@@ -397,9 +397,14 @@ ASTNode *createDeclarationNode(ASTNode *varType, const char *varName, ASTNode *i
 ASTNode *createBoolNode(bool value);
 ASTNode *createShortNode(short value);
 ASTNode *createUnsignedShortNode(unsigned short value);
-ASTNode *createIntLiteralNode(int value);
-ASTNode *createUnsignedIntLiteralNode(unsigned int value);
-ASTNode *createLongLiteralNode(long value);
-ASTNode *createUnsignedLongLiteralNode(unsigned long value);
+ASTNode *createIntNode(int value);
+ASTNode *createUnsignedIntNode(unsigned int value);
+ASTNode *createLongNode(long value);
+ASTNode *createUnsignedLongNode(unsigned long value);
+ASTNode *createLongLongNode(long long value);
+ASTNode *createUnsignedLongLongNode(unsigned long long value);
+ASTNode *createFloatNode(float value);
+ASTNode *createDoubleNode(double value);
+ASTNode *createLongDoubleNode(long double value);
 
 #endif
