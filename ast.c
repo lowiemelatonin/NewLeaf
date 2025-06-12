@@ -77,3 +77,21 @@ ASTNode *createUnsignedIntLiteralNode(unsigned int value){
     node->unsignedIntLiteral.value = value;
     return node;
 }
+
+ASTNode *createLongLiteralNode(long value){
+    ASTNode *node = malloc(sizeof(ASTNode));
+    if(!node) return NULL;
+
+    node->type = LONG_NODE;
+    node->longLiteral.value = value;
+    return node;
+}
+
+ASTNode *createUnsignedLongLiteralNode(unsigned long value){
+    ASTNode *node = malloc(sizeof(ASTNode));
+    if(!node) return NULL;
+
+    node->type = UNSIGNED_LONG_NODE;
+    node->unsignedLongLiteral.value = value;
+    return node;
+}
