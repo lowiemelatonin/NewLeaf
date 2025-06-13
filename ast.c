@@ -12,6 +12,25 @@ ASTNode *createIdentifierNode(const char *name){
     return node;
 }
 
+ASTNode *createLiteralNode(LiteralType type, LiteralValue value){
+    ASTNode *node = malloc(sizeof(ASTNode));
+    if(!node) return NULL;
+
+    node->type = LITERAL_NODE;
+    node->literal.type = type;
+    
+    if(type == TYPE_STRING){
+        node->literal.value.stringVal = strdup(value.stringVal);
+        if(!node->literal.value.stringVal){
+            free(node);
+            return NULL;
+        }
+    } else{
+        node->literal.value = value;
+    }
+    return node;
+}
+
 ASTNode *createAssignmentNode(ASTNode *left, ASTNode *right){
     ASTNode *node = malloc(sizeof(ASTNode));
     if(!node) return NULL;
@@ -30,113 +49,5 @@ ASTNode *createDeclarationNode(ASTNode *varType, const char *varName, ASTNode *i
     node->declaration.varType = varType;
     node->declaration.varName = strdup(varName);
     node->declaration.initializer = initializer;
-    return node;
-}
-
-ASTNode *createBoolNode(bool value){
-    ASTNode *node = malloc(sizeof(ASTNode));
-    if(!node) return NULL;
-
-    node->type = BOOL_NODE;
-    node->boolLiteral.value = value;
-    return node;
-}
-
-ASTNode *createShortNode(short value){
-    ASTNode *node = malloc(sizeof(ASTNode));
-    if(!node) return NULL;
-
-    node->type = SHORT_NODE;
-    node->shortLiteral.value = value;
-    return node;
-}
-
-ASTNode *createUnsignedShortNode(unsigned short value){
-    ASTNode *node = malloc(sizeof(ASTNode));
-    if(!node) return NULL;
-
-    node->type = UNSIGNED_SHORT_NODE;
-    node->unsignedShortLiteral.value = value;
-    return node;
-}
-
-ASTNode *createIntNode(int value){
-    ASTNode *node = malloc(sizeof(ASTNode));
-    if(!node) return NULL;
-
-    node->type = INT_NODE;
-    node->intLiteral.value = value;
-    return node;
-}
-
-ASTNode *createUnsignedIntNode(unsigned int value){
-    ASTNode *node = malloc(sizeof(ASTNode));
-    if(!node) return NULL;
-
-    node->type = UNSIGNED_INT_NODE;
-    node->unsignedIntLiteral.value = value;
-    return node;
-}
-
-ASTNode *createLongNode(long value){
-    ASTNode *node = malloc(sizeof(ASTNode));
-    if(!node) return NULL;
-
-    node->type = LONG_NODE;
-    node->longLiteral.value = value;
-    return node;
-}
-
-ASTNode *createUnsignedLongNode(unsigned long value){
-    ASTNode *node = malloc(sizeof(ASTNode));
-    if(!node) return NULL;
-
-    node->type = UNSIGNED_LONG_NODE;
-    node->unsignedLongLiteral.value = value;
-    return node;
-}
-
-ASTNode *createLongLongNode(long long value){
-    ASTNode *node = malloc(sizeof(ASTNode));
-    if(!node) return NULL;
-
-    node->type = LONG_LONG_NODE;
-    node->longLongLiteral.value = value;
-    return node;
-}
-
-ASTNode *createUnsignedLongLongNode(unsigned long long value){
-    ASTNode *node = malloc(sizeof(ASTNode));
-    if(!node) return NULL;
-
-    node->type = UNSIGNED_LONG_LONG_NODE;
-    node->unsignedLongLongLiteral.value = value;
-    return node;
-}
-
-ASTNode *createFloatNode(float value){
-    ASTNode *node = malloc(sizeof(ASTNode));
-    if(!node) return NULL;
-
-    node->type = FLOAT_NODE;
-    node->floatLiteral.value = value;
-    return node;
-}
-
-ASTNode *createDoubleNode(double value){
-    ASTNode *node = malloc(sizeof(ASTNode));
-    if(!node) return NULL;
-
-    node->type = DOUBLE_NODE;
-    node->doubleLiteral.value = value;
-    return node;
-}
-
-ASTNode *createLongDoubleNode(long double value){
-    ASTNode *node = malloc(sizeof(ASTNode));
-    if(!node) return NULL;
-
-    node->type = LONG_DOUBLE_NODE;
-    node->longDoubleLiteral.value = value;
     return node;
 }

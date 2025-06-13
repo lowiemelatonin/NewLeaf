@@ -4,6 +4,44 @@
 #include <stdbool.h>
 
 typedef enum {
+    TYPE_BOOL,
+    TYPE_SHORT,
+    TYPE_USHORT,
+    TYPE_INT,
+    TYPE_UINT,
+    TYPE_LONG,
+    TYPE_ULONG,
+    TYPE_LONG_LONG,
+    TYPE_ULONG_LONG,
+    TYPE_FLOAT,
+    TYPE_DOUBLE,
+    TYPE_LONG_DOUBLE,
+    TYPE_SIGNED_CHAR,
+    TYPE_CHAR_NODE,
+    TYPE_UNSIGNED_CHAR,
+    TYPE_STRING,
+} LiteralType;
+
+typedef union {
+    bool boolVal;
+    short shortVal;
+    unsigned short uShortVal;
+    int intVal;
+    unsigned int uIntVal;
+    long longVal;
+    unsigned long uLongVal;
+    long long longLongVal;
+    unsigned long long uLongLongVal;
+    float floatVal;
+    double doubleVal;
+    long double longDoubleVal;
+    signed char signedCharVal;
+    char charVal;
+    unsigned char uCharVal;
+    char *stringVal;
+} LiteralValue;
+
+typedef enum {
     POSITIVE_UNOP,
     NEGATIVE_UNOP,
     NOT_UNOP,
@@ -48,25 +86,10 @@ typedef enum {
 
 typedef enum {
     IDENTIFIER_NODE,
+    LITERAL_NODE,
     ASSIGNMENT_NODE,
     DECLARATION_NODE,
 
-    BOOL_NODE,
-    SHORT_NODE,
-    UNSIGNED_SHORT_NODE,
-    INT_NODE,
-    UNSIGNED_INT_NODE,
-    LONG_NODE,
-    UNSIGNED_LONG_NODE,
-    LONG_LONG_NODE,
-    UNSIGNED_LONG_LONG_NODE,
-    FLOAT_NODE,
-    DOUBLE_NODE,
-    LONG_DOUBLE_NODE,
-    SIGNED_CHAR_NODE,
-    CHAR_NODE,
-    UNSIGNED_CHAR_NODE,
-    STRING_NODE,
     POINTER_NODE,
     VOID_NODE,
     NULL_NODE,
@@ -126,6 +149,11 @@ typedef struct ASTNode {
         } identifier;
 
         struct {
+            LiteralType type;
+            LiteralValue value;
+        } literal;
+        
+        struct {
             ASTNode *left;
             ASTNode *right;
         } assignment;
@@ -136,70 +164,6 @@ typedef struct ASTNode {
             ASTNode *initializer;
         } declaration;
 
-        struct {
-            bool value;
-        } boolLiteral;
-
-        struct {
-            short value;
-        } shortLiteral;
-
-        struct {
-            unsigned short value;
-        } unsignedShortLiteral;
-
-        struct {
-            int value;
-        } intLiteral;
-
-        struct {
-            unsigned int value;
-        } unsignedIntLiteral;
-
-        struct {
-            long value;
-        } longLiteral;
-
-        struct {
-            unsigned long value;
-        } unsignedLongLiteral;
-
-        struct {
-            long long value;
-        } longLongLiteral;
-
-        struct {
-            unsigned long long value;
-        } unsignedLongLongLiteral;
-
-        struct {
-            float value;
-        } floatLiteral;
-
-        struct {
-            double value; 
-        } doubleLiteral;
-
-        struct {
-            long double value; 
-        } longDoubleLiteral;
-
-        struct {
-            signed char value;
-        } signedCharLiteral;
-
-        struct {
-            char value;
-        } charLiteral;
-
-        struct {
-            unsigned char value;
-        } unsignedCharLiteral;
-
-        struct {
-            char *value;
-        } stringLiteral;
-        
         struct {
             ASTNode *ptr;
         } pointer;
@@ -392,19 +356,8 @@ typedef struct ASTNode {
 } ASTNode;
 
 ASTNode *createIdentifierNode(const char *name);
+ASTNode *createLiteralNode(LiteralType type, LiteralValue value);
 ASTNode *createAssignmentNode(ASTNode *left, ASTNode *right);
 ASTNode *createDeclarationNode(ASTNode *varType, const char *varName, ASTNode *initializer);
-ASTNode *createBoolNode(bool value);
-ASTNode *createShortNode(short value);
-ASTNode *createUnsignedShortNode(unsigned short value);
-ASTNode *createIntNode(int value);
-ASTNode *createUnsignedIntNode(unsigned int value);
-ASTNode *createLongNode(long value);
-ASTNode *createUnsignedLongNode(unsigned long value);
-ASTNode *createLongLongNode(long long value);
-ASTNode *createUnsignedLongLongNode(unsigned long long value);
-ASTNode *createFloatNode(float value);
-ASTNode *createDoubleNode(double value);
-ASTNode *createLongDoubleNode(long double value);
 
 #endif
