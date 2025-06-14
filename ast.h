@@ -20,7 +20,7 @@ typedef enum {
     TYPE_CHAR_NODE,
     TYPE_UNSIGNED_CHAR,
     TYPE_STRING,
-} LiteralType;
+} PrimitiveType;
 
 typedef union {
     bool boolVal;
@@ -39,7 +39,7 @@ typedef union {
     char charVal;
     unsigned char uCharVal;
     char *stringVal;
-} LiteralValue;
+} PrimitiveValue;
 
 typedef enum {
     POSITIVE_UNOP,
@@ -83,6 +83,20 @@ typedef enum {
 
     COMMA_BINOP
 } BinaryOpType;
+
+typedef enum {
+    SIMPLE_ASSIGN,
+    ADD_AND_ASSIGN,
+    SUB_AND_ASSIGN,
+    MUL_AND_ASSIGN,
+    DIV_AND_ASSIGN,
+    MOD_AND_ASSIGN,
+    AND_AND_ASSIGN,
+    OR_AND_ASSIGN,
+    XOR_AND_ASSIGN,
+    SHIFT_LEFT_AND_ASSIGN,
+    SHIFT_RIGHT_AND_ASSIGN
+} AssignmentOpType;
 
 typedef enum {
     IDENTIFIER_NODE,
@@ -149,13 +163,14 @@ typedef struct ASTNode {
         } identifier;
 
         struct {
-            LiteralType type;
-            LiteralValue value;
+            PrimitiveType type;
+            PrimitiveValue value;
         } literal;
         
         struct {
             ASTNode *left;
             ASTNode *right;
+            AssignmentOpType op;
         } assignment;
 
         struct {
@@ -356,8 +371,9 @@ typedef struct ASTNode {
 } ASTNode;
 
 ASTNode *createIdentifierNode(const char *name);
-ASTNode *createLiteralNode(LiteralType type, LiteralValue value);
-ASTNode *createAssignmentNode(ASTNode *left, ASTNode *right);
+ASTNode *createLiteralNode(PrimitiveType type, PrimitiveValue value);
+ASTNode *createAssignmentNode(ASTNode *left, ASTNode *right, AssignmentOpType op);
 ASTNode *createDeclarationNode(ASTNode *varType, const char *varName, ASTNode *initializer);
+ASTNode *createPointerNode(ASTNode *ptrTo);
 
 #endif

@@ -23,7 +23,7 @@ ASTNode *createIdentifierNode(const char *name){
     return node;
 }
 
-ASTNode *createLiteralNode(LiteralType type, LiteralValue value){
+ASTNode *createLiteralNode(PrimitiveType type, PrimitiveValue value){
     ASTNode *node = allocNode(LITERAL_NODE);
     if(!node) return NULL;
 
@@ -40,12 +40,13 @@ ASTNode *createLiteralNode(LiteralType type, LiteralValue value){
     return node;
 }
 
-ASTNode *createAssignmentNode(ASTNode *left, ASTNode *right){
+ASTNode *createAssignmentNode(ASTNode *left, ASTNode *right, AssignmentOpType op){
     ASTNode *node = allocNode(ASSIGNMENT_NODE);
     if(!node) return NULL;
 
     node->assignment.left = left;
     node->assignment.right = right;
+    node->assignment.op = op;
     return node;
 }
 
@@ -60,5 +61,13 @@ ASTNode *createDeclarationNode(ASTNode *varType, const char *varName, ASTNode *i
         return NULL;
     }
     node->declaration.initializer = initializer;
+    return node;
+}
+
+ASTNode *createPointerNode(ASTNode *ptrTo){
+    ASTNode *node = allocNode(POINTER_NODE);
+    if(!node) return NULL;
+
+    node->pointer.ptr = ptrTo;
     return node;
 }
