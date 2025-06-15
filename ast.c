@@ -71,3 +71,18 @@ ASTNode *createPointerNode(ASTNode *ptrTo){
     node->pointer.ptr = ptrTo;
     return node;
 }
+
+ASTNode *createNullNode(ASTNode *typeOf){
+    ASTNode *node = allocNode(NULL_NODE);
+    if(!node) return NULL;
+
+    node->null.typeOf = typeOf;
+    return node;
+};
+
+ASTNode *createVoidNode(void){
+    ASTNode *node = allocNode(VOID_NODE);
+    if(!node) return NULL;
+
+    return node;
+}

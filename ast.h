@@ -182,7 +182,11 @@ typedef struct ASTNode {
         struct {
             ASTNode *ptr;
         } pointer;
-                
+        
+        struct {
+            ASTNode *typeOf;
+        } null;
+        
         struct {
             ASTNode *typeOfElement;
             ASTNode *size;
@@ -375,5 +379,7 @@ ASTNode *createLiteralNode(PrimitiveType type, PrimitiveValue value);
 ASTNode *createAssignmentNode(ASTNode *left, ASTNode *right, AssignmentOpType op);
 ASTNode *createDeclarationNode(ASTNode *varType, const char *varName, ASTNode *initializer);
 ASTNode *createPointerNode(ASTNode *ptrTo);
+ASTNode *createNullNode(ASTNode *typeOf);
+ASTNode *createVoidNode(void);
 
 #endif
