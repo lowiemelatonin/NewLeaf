@@ -197,13 +197,13 @@ typedef struct ASTNode {
             ASTNode **fields;
             int fieldsCount;
         } structDef;
-                
+
         struct {
             char *name;
             ASTNode **fields;
             int fieldsCount;
         } unionDef;
-                
+
         struct {
             char *name;
             char **values;
@@ -383,5 +383,8 @@ ASTNode *createNullNode(ASTNode *typeOf);
 ASTNode *createVoidNode(void);
 ASTNode *createArrayNode(ASTNode *typeOfElement, ASTNode *size);
 ASTNode *createStructNode(char *name, ASTNode **fields, int fieldsCount);
+ASTNode *createUnionNode(char *name, ASTNode **fields, int fieldsCount);
+ASTNode *createEnumNode(char *name, char **values, int *intValues, int valuesCount);
+ASTNode *createTypedefNode(char *alias, ASTNode *original);
 
 #endif

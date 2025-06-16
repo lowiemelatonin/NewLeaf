@@ -109,3 +109,76 @@ ASTNode *createStructNode(char *name, ASTNode **fields, int fieldsCount){
     node->structDef.fieldsCount = fieldsCount;
     return node;
 }
+
+ASTNode *createUnionNode(char *name, ASTNode **fields, int fieldsCount){
+    ASTNode *node = allocNode(UNION_NODE);
+    if(!node) return NULL;
+
+    node->unionDef.name = strdup(name);
+    if(!node->unionDef.name){
+        free(node);
+        return NULL;
+    }
+    node->unionDef.fields = fields;
+    node->unionDef.fieldsCount = fieldsCount;
+    return node;
+}
+
+ASTNode *createEnumNode(char *name, char **values, int *intValues, int valuesCount){
+    ASTNode *node = allocNode(ENUM_NODE);
+    if(!node) return NULL;
+
+    node->enumDef.name = strdup(name);
+    if(!node->enumDef.name){
+        free(node);
+        return NULL;
+    }
+
+    node->enumDef.values = malloc(sizeof(char*) * valuesCount);
+    if(!node->enumDef.values){
+        free(node->enumDef.name);
+        free(node);
+        return NULL;
+    }
+
+    for(int i = 0; i < valuesCount; i++){
+        node->enumDef.values[i] = strdup(values[i]);
+        if(!node->enumDef.values[i]){
+            for(int j = 0; j < i; j++){
+                free(node->enumDef.values[j]);
+            }
+            free(node->enumDef.values);
+            free(node->enumDef.name);
+            free(node);
+            return NULL;
+        }
+    }
+
+    node->enumDef.intValues = malloc(sizeof(int) * valuesCount);
+    if(!node->enumDef.intValues){
+        for(int i = 0; i < valuesCount; i++){
+            free(node->enumDef.values[i]);
+        }
+        free(node->enumDef.values);
+        free(node->enumDef.name);
+        free(node);
+        return NULL;
+    }
+    memcpy(node->enumDef.intValues, intValues, sizeof(int) * valuesCount);
+
+    node->enumDef.valuesCount = valuesCount;
+    return node;
+}
+
+ASTNode *createTypedefNode(char *alias, ASTNode *original){
+    ASTNode *node = allocNode(TYPEDEF_NODE);
+    if(!node) return NULL;
+
+    node->typedefDef.alias = strdup(alias);
+    if(!node->typedefDef.alias){
+        free(node);
+        return NULL;
+    }
+    node->typedefDef.original = original;
+    return node;
+}
