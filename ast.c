@@ -86,3 +86,26 @@ ASTNode *createVoidNode(void){
 
     return node;
 }
+
+ASTNode *createArrayNode(ASTNode *typeOfElement, ASTNode *size){
+    ASTNode *node = allocNode(ARRAY_NODE);
+    if(!node) return NULL;
+
+    node->array.typeOfElement = typeOfElement;
+    node->array.size = size;
+    return node;
+}
+
+ASTNode *createStructNode(char *name, ASTNode **fields, int fieldsCount){
+    ASTNode *node = allocNode(STRUCT_NODE);
+    if(!node) return NULL;
+
+    node->structDef.name = strdup(name);
+    if(!node->structDef.name){
+        free(node);
+        return NULL;
+    }
+    node->structDef.fields = fields;
+    node->structDef.fieldsCount = fieldsCount;
+    return node;
+}

@@ -381,5 +381,7 @@ ASTNode *createDeclarationNode(ASTNode *varType, const char *varName, ASTNode *i
 ASTNode *createPointerNode(ASTNode *ptrTo);
 ASTNode *createNullNode(ASTNode *typeOf);
 ASTNode *createVoidNode(void);
+ASTNode *createArrayNode(ASTNode *typeOfElement, ASTNode *size);
+ASTNode *createStructNode(char *name, ASTNode **fields, int fieldsCount);
 
 #endif
