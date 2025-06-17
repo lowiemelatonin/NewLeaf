@@ -392,5 +392,10 @@ ASTNode *createTypedefNode(char *alias, ASTNode *original);
 ASTNode *createImplNode(char *structName, ASTNode **methods, int methodsCount);
 ASTNode *createArrayAccessNode(ASTNode *array, ASTNode *index);
 ASTNode *createFieldAccessNode(ASTNode *object, char *fieldName, bool isPointerAccess);
+ASTNode *createFunctionNode(char *name, ASTNode *returnType, ASTNode **params, int paramCount, ASTNode **body, int bodyCount);
+ASTNode *createReturnNode(ASTNode *value);
+ASTNode *createFunctionCallNode(ASTNode *function, ASTNode **args, int argsCount);
+ASTNode *createLabelNode(char *labelName);
+ASTNode *createJumpNode(char *labelName);
 
 #endif

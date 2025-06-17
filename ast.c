@@ -231,3 +231,90 @@ ASTNode *createFieldAccessNode(ASTNode *object, char *fieldName, bool isPointerA
     node->fieldAccess.isPointerAccess = isPointerAccess;
     return node;
 }
+
+ASTNode *createFunctionNode(char *name, ASTNode *returnType, ASTNode **params, int paramCount, ASTNode **body, int bodyCount){
+    ASTNode *node = allocNode(FUNCTION_NODE);
+    if(!node) return NULL;
+
+    node->functionDef.name = strdup(name);
+    if(!node->functionDef.name){
+        free(node);
+        return NULL;
+    }
+
+    node->functionDef.returnType = returnType;
+    
+    node->functionDef.params = malloc(paramCount * sizeof(ASTNode *));
+    if(!node->functionDef.params){
+        free(node->functionDef.name);
+        free(node);
+        return NULL;
+    }
+    for(int i = 0; i < paramCount; i++){
+        node->functionDef.params[i] = params[i];
+    }
+    node->functionDef.paramCount = paramCount;
+
+    node->functionDef.body = malloc(bodyCount * sizeof(ASTNode *));
+    if(!node->functionDef.body){
+        free(node->functionDef.params);
+        free(node->functionDef.name);
+        free(node);
+        return NULL;
+    }
+    for(int i = 0; i < bodyCount; i++){
+        node->functionDef.body[i] = body[i];
+    }
+    node->functionDef.bodyCount = bodyCount;
+    return node;
+}
+
+ASTNode *createReturnNode(ASTNode *value){
+    ASTNode *node = allocNode(RETURN_NODE);
+    if(!node) return NULL;
+
+    node->returnStmt.value = value;
+    return node;
+}
+
+ASTNode *createFunctionCallNode(ASTNode *function, ASTNode **args, int argsCount){
+    ASTNode *node = allocNode(FUNCTION_CALL_NODE);
+    if(!node) return NULL;
+
+    node->functionCall.function = function;
+
+    node->functionCall.args = malloc(argsCount * sizeof(ASTNode *));
+    if(!node->functionCall.args){
+        free(node);
+        return NULL;
+    }
+    for(int i = 0; i < argsCount; i++){
+        node->functionCall.args[i] = args[i];
+    }
+    node->functionCall.argsCount = argsCount;
+    return node;
+}
+
+ASTNode *createLabelNode(char *labelName){
+    ASTNode *node = allocNode(LABEL_NODE);
+    if(!node) return NULL;
+
+    node->labelStmt.labelName = strdup(labelName);
+    if(!node->labelStmt.labelName){
+        free(node);
+        return NULL;
+    }
+    return node;
+}
+
+ASTNode *createJumpNode(char *labelName){
+    ASTNode *node = allocNode(JUMP_NODE);
+    if(!node) return NULL;
+
+    node->jumpStmt.labelName = strdup(labelName);
+    if(!node->jumpStmt.labelName){
+        free(node);
+        return NULL;
+    }
+    return node;
+}
