@@ -182,3 +182,52 @@ ASTNode *createTypedefNode(char *alias, ASTNode *original){
     node->typedefDef.original = original;
     return node;
 }
+
+ASTNode *createImplNode(char *structName, ASTNode **methods, int methodsCount){
+    ASTNode *node = allocNode(IMPL_NODE);
+    if(!node) return NULL;
+
+    node->implDef.structName = strdup(structName);
+    if(!node->implDef.structName){
+        free(node);
+        return NULL;
+    }
+
+    node->implDef.methods = malloc(methodsCount * sizeof(ASTNode *));
+    if(!node->implDef.methods){
+        free(node->implDef.structName);
+        free(node);
+        return NULL;
+    }
+
+    for(int i = 0; i < methodsCount; i++){
+        node->implDef.methods[i] = methods[i];
+    }
+
+    node->implDef.methodsCount = methodsCount;
+    return node;
+}
+
+ASTNode *createArrayAccessNode(ASTNode *array, ASTNode *index){
+    ASTNode *node = allocNode(ARRAY_ACCESS_NODE);
+    if(!node) return NULL;
+
+    node->arrayAccess.array = array;
+    node->arrayAccess.index = index;
+    return node;
+}
+
+ASTNode *createFieldAccessNode(ASTNode *object, char *fieldName, bool isPointerAccess){
+    ASTNode *node = allocNode(FIELD_ACCESS_NODE);
+    if(!node) return NULL;
+
+    node->fieldAccess.object = object;
+    node->fieldAccess.fieldName = strdup(fieldName);
+    if(!node->fieldAccess.fieldName){
+        free(node);
+        return NULL;
+    }
+
+    node->fieldAccess.isPointerAccess = isPointerAccess;
+    return node;
+}

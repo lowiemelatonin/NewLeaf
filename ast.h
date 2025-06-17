@@ -113,11 +113,14 @@ typedef enum {
     UNION_NODE,
     ENUM_NODE,
     TYPEDEF_NODE,
+    IMPL_NODE,
+
+    ARRAY_ACCESS_NODE,
+    FIELD_ACCESS_NODE,
 
     FUNCTION_NODE,
     RETURN_NODE,
     FUNCTION_CALL_NODE,
-    IMPL_NODE,
 
     LABEL_NODE,
     JUMP_NODE,
@@ -386,5 +389,8 @@ ASTNode *createStructNode(char *name, ASTNode **fields, int fieldsCount);
 ASTNode *createUnionNode(char *name, ASTNode **fields, int fieldsCount);
 ASTNode *createEnumNode(char *name, char **values, int *intValues, int valuesCount);
 ASTNode *createTypedefNode(char *alias, ASTNode *original);
+ASTNode *createImplNode(char *structName, ASTNode **methods, int methodsCount);
+ASTNode *createArrayAccessNode(ASTNode *array, ASTNode *index);
+ASTNode *createFieldAccessNode(ASTNode *object, char *fieldName, bool isPointerAccess);
 
 #endif
