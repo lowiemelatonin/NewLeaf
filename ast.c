@@ -318,3 +318,67 @@ ASTNode *createJumpNode(char *labelName){
     }
     return node;
 }
+
+ASTNode *createMallocExpr(ASTNode *size){
+    ASTNode *node = allocNode(MALLOC_NODE);
+    if(!node) return NULL;
+
+    node->mallocExpr.size = size;
+    return node;
+}
+
+ASTNode *createCallocExpr(ASTNode *num, ASTNode *size){
+    ASTNode *node = allocNode(CALLOC_NODE);
+    if(!node) return NULL;
+
+    node->callocExpr.num = num;
+    node->callocExpr.size = size;
+    return node;
+}
+
+ASTNode *createReallocExpr(ASTNode *ptr, ASTNode *size){
+    ASTNode *node = allocNode(REALLOC_NODE);
+    if(!node) return NULL;
+
+    node->reallocExpr.ptr = ptr;
+    node->reallocExpr.size = size;
+    return node;
+}
+
+ASTNode *createFreeExpr(ASTNode *ptr){
+    ASTNode *node = allocNode(FREE_NODE);
+    if(!node) return NULL;
+
+    node->freeExpr.ptr = ptr;
+    return node;
+}
+
+ASTNode *createMemcpyExpr(ASTNode *dest, ASTNode *src, ASTNode *size){
+    ASTNode *node = allocNode(MEMCPY_NODE);
+    if(!node) return NULL;
+
+    node->memcpyExpr.dest = dest;
+    node->memcpyExpr.src = src;
+    node->memcpyExpr.size = size;
+    return node;
+}
+
+ASTNode *createMemsetExpr(ASTNode *dest, ASTNode *value, ASTNode *size){
+    ASTNode *node = allocNode(MEMSET_NODE);
+    if(!node) return NULL;
+
+    node->memsetExpr.dest = dest;
+    node->memsetExpr.value = value;
+    node->memsetExpr.size = size;
+    return node;
+}
+
+ASTNode *createMemmoveExpr(ASTNode *dest, ASTNode *src, ASTNode *size){
+    ASTNode *node = allocNode(MEMMOVE_NODE);
+    if(!node) return NULL;
+
+    node->memmoveExpr.dest = dest;
+    node->memmoveExpr.src = src;
+    node->memmoveExpr.size = size;
+    return node;
+}

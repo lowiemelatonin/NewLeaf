@@ -130,6 +130,10 @@ typedef enum {
     REALLOC_NODE,
     FREE_NODE,
 
+    MEMCPY_NODE,
+    MEMSET_NODE,
+    MEMMOVE_NODE,
+
     UNARY_OPERATION_NODE,
     BINARY_OPERATION_NODE,
     TERNARY_OPERATION_NODE,
@@ -264,7 +268,7 @@ typedef struct ASTNode {
         } jumpStmt;
 
         struct {
-            ASTNode *sizeExpr;
+            ASTNode *size;
         } mallocExpr;
 
         struct {
@@ -274,12 +278,30 @@ typedef struct ASTNode {
 
         struct {
             ASTNode *ptr;
-            ASTNode *sizeExpr;
+            ASTNode *size;
         } reallocExpr;
 
         struct {
             ASTNode *ptr;
         } freeExpr;
+
+        struct {
+            ASTNode *dest;
+            ASTNode *src;
+            ASTNode *size;
+        } memcpyExpr;
+
+        struct {
+            ASTNode *dest;
+            ASTNode *value;
+            ASTNode *size;
+        } memsetExpr;
+
+        struct {
+            ASTNode *dest;
+            ASTNode *src;
+            ASTNode *size;
+        } memmoveExpr;
 
         struct {
             ASTNode *expr;
@@ -397,5 +419,12 @@ ASTNode *createReturnNode(ASTNode *value);
 ASTNode *createFunctionCallNode(ASTNode *function, ASTNode **args, int argsCount);
 ASTNode *createLabelNode(char *labelName);
 ASTNode *createJumpNode(char *labelName);
+ASTNode *createMallocExpr(ASTNode *size);
+ASTNode *createCallocExpr(ASTNode *num, ASTNode *size);
+ASTNode *createReallocExpr(ASTNode *ptr, ASTNode *size);
+ASTNode *createFreeExpr(ASTNode *ptr);
+ASTNode *createMemcpyExpr(ASTNode *dest, ASTNode *src, ASTNode *size);
+ASTNode *createMemsetExpr(ASTNode *dest, ASTNode *value, ASTNode *size);
+ASTNode *createMemmoveExpr(ASTNode *dest, ASTNode *src, ASTNode *size);
 
 #endif
