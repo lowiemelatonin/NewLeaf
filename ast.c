@@ -411,3 +411,109 @@ ASTNode *createTernaryOpNode(ASTNode *condition, ASTNode *trueExpr, ASTNode *fal
     node->ternaryOp.falseExpr = falseExpr;
     return node;
 }
+
+ASTNode *createBlockNode(ASTNode **statements, int stmtCount){
+    ASTNode *node = allocNode(BLOCK_NODE);
+    if(!node) return NULL;
+
+    node->block.statements = malloc(stmtCount * sizeof(ASTNode *));
+    if(!node->block.statements){
+        free(node);
+        return NULL;
+    }
+    for(int i = 0; i < stmtCount; i++){
+        node->block.statements[i] = statements[i];
+    }
+
+    node->block.stmtCount = stmtCount;
+    return node;
+}
+
+ASTNode *createCompoundExprNode(ASTNode **statements, int stmtCount){
+    ASTNode *node = allocNode(COMPOUND_EXPR_NODE);
+    if(!node) return NULL;
+
+    node->compoundExpr.statements = malloc(stmtCount * sizeof(ASTNode *));
+    if(!node->compoundExpr.statements){
+        free(node);
+        return NULL;
+    }
+    for(int i = 0; i < stmtCount; i++){
+        node->compoundExpr.statements[i] = statements[i];
+    }
+
+    node->compoundExpr.stmtCount = stmtCount;
+    return node;
+}
+
+ASTNode *createCastExprNode(ASTNode *targetType, ASTNode *value){
+    ASTNode *node = allocNode(CAST_EXPR_NODE);
+    if(!node) return NULL;
+
+    node->castExpr.targetType = targetType;
+    node->castExpr.value = value;
+    return node;
+}
+
+ASTNode *createIfStmtNode(ASTNode *condition, ASTNode *thenBranch, ASTNode *elseBranch){
+    ASTNode *node = allocNode(IF_NODE);
+    if(!node) return NULL;
+
+    node->ifStmt.condition = condition;
+    node->ifStmt.thenBranch = thenBranch;
+    node->ifStmt.elseBranch = elseBranch;
+    return node;
+}
+
+ASTNode *createSwitchStmtNode(ASTNode *expr, ASTNode **cases, int caseCount){
+    ASTNode *node = allocNode(SWITCH_NODE);
+    if(!node) return NULL;
+
+    node->switchStmt.expr = expr;
+    node->switchStmt.cases = malloc(caseCount * sizeof(ASTNode *));
+    if(!node->switchStmt.cases){
+        free(node);
+        return NULL;
+    }
+    for(int i = 0; i < caseCount; i++){
+        node->switchStmt.cases[i] = cases[i];
+    }
+    
+    node->switchStmt.caseCount = caseCount;
+    return node;
+}
+
+ASTNode *createCaseStmtNode(ASTNode *value, ASTNode **body, int bodyCount){
+    ASTNode *node = allocNode(CASE_NODE);
+    if(!node) return NULL;
+
+    node->caseStmt.value = value;
+    node->caseStmt.body = malloc(bodyCount * sizeof(ASTNode *));
+    if(!node->caseStmt.body){
+        free(node);
+        return NULL;
+    }
+    for(int i = 0; i < bodyCount; i++){
+        node->caseStmt.body[i] = body[i];
+    }
+
+    node->caseStmt.bodyCount = bodyCount;
+    return node;
+}
+
+ASTNode *createDefaultStmtNode(ASTNode **body, int bodyCount){
+    ASTNode *node = allocNode(DEFAULT_NODE);
+    if(!node) return NULL;
+
+    node->defaultStmt.body = malloc(bodyCount * sizeof(ASTNode *));
+    if(!node->defaultStmt.body){
+        free(node);
+        return NULL;
+    }
+    for(int i = 0; i < bodyCount; i++){
+        node->defaultStmt.body[i] = body[i];
+    }
+    
+    node->defaultStmt.bodyCount = bodyCount;
+    return node;
+}

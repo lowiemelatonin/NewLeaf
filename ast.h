@@ -440,5 +440,12 @@ ASTNode *createMemmoveExprNode(ASTNode *dest, ASTNode *src, ASTNode *size);
 ASTNode *createUnaryOpNode(ASTNode *expr, UnaryOpType op);
 ASTNode *createBinaryOpNode(ASTNode *left, ASTNode *right, BinaryOpType op);
 ASTNode *createTernaryOpNode(ASTNode *condition, ASTNode *trueExpr, ASTNode *falseExpr);
+ASTNode *createBlockNode(ASTNode **statements, int stmtCount);
+ASTNode *createCompoundExprNode(ASTNode **statements, int stmtCount);
+ASTNode *createCastExprNode(ASTNode *targetType, ASTNode *value);
+ASTNode *createIfStmtNode(ASTNode *condition, ASTNode *thenBranch, ASTNode *elseBranch);
+ASTNode *createSwitchStmtNode(ASTNode *expr, ASTNode **cases, int caseCount);
+ASTNode *createCaseStmtNode(ASTNode *value, ASTNode **body, int bodyCount);
+ASTNode *createDefaultStmtNode(ASTNode **body, int bodyCount);
 
 #endif
