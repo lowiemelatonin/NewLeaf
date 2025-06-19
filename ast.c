@@ -319,7 +319,7 @@ ASTNode *createJumpNode(char *labelName){
     return node;
 }
 
-ASTNode *createMallocExpr(ASTNode *size){
+ASTNode *createMallocExprNode(ASTNode *size){
     ASTNode *node = allocNode(MALLOC_NODE);
     if(!node) return NULL;
 
@@ -327,7 +327,7 @@ ASTNode *createMallocExpr(ASTNode *size){
     return node;
 }
 
-ASTNode *createCallocExpr(ASTNode *num, ASTNode *size){
+ASTNode *createCallocExprNode(ASTNode *num, ASTNode *size){
     ASTNode *node = allocNode(CALLOC_NODE);
     if(!node) return NULL;
 
@@ -336,7 +336,7 @@ ASTNode *createCallocExpr(ASTNode *num, ASTNode *size){
     return node;
 }
 
-ASTNode *createReallocExpr(ASTNode *ptr, ASTNode *size){
+ASTNode *createReallocExprNode(ASTNode *ptr, ASTNode *size){
     ASTNode *node = allocNode(REALLOC_NODE);
     if(!node) return NULL;
 
@@ -345,7 +345,7 @@ ASTNode *createReallocExpr(ASTNode *ptr, ASTNode *size){
     return node;
 }
 
-ASTNode *createFreeExpr(ASTNode *ptr){
+ASTNode *createFreeExprNode(ASTNode *ptr){
     ASTNode *node = allocNode(FREE_NODE);
     if(!node) return NULL;
 
@@ -353,7 +353,7 @@ ASTNode *createFreeExpr(ASTNode *ptr){
     return node;
 }
 
-ASTNode *createMemcpyExpr(ASTNode *dest, ASTNode *src, ASTNode *size){
+ASTNode *createMemcpyExprNode(ASTNode *dest, ASTNode *src, ASTNode *size){
     ASTNode *node = allocNode(MEMCPY_NODE);
     if(!node) return NULL;
 
@@ -363,7 +363,7 @@ ASTNode *createMemcpyExpr(ASTNode *dest, ASTNode *src, ASTNode *size){
     return node;
 }
 
-ASTNode *createMemsetExpr(ASTNode *dest, ASTNode *value, ASTNode *size){
+ASTNode *createMemsetExprNode(ASTNode *dest, ASTNode *value, ASTNode *size){
     ASTNode *node = allocNode(MEMSET_NODE);
     if(!node) return NULL;
 
@@ -373,12 +373,41 @@ ASTNode *createMemsetExpr(ASTNode *dest, ASTNode *value, ASTNode *size){
     return node;
 }
 
-ASTNode *createMemmoveExpr(ASTNode *dest, ASTNode *src, ASTNode *size){
+ASTNode *createMemmoveExprNode(ASTNode *dest, ASTNode *src, ASTNode *size){
     ASTNode *node = allocNode(MEMMOVE_NODE);
     if(!node) return NULL;
 
     node->memmoveExpr.dest = dest;
     node->memmoveExpr.src = src;
     node->memmoveExpr.size = size;
+    return node;
+}
+
+ASTNode *createUnaryOpNode(ASTNode *expr, UnaryOpType op){
+    ASTNode *node = allocNode(UNARY_OPERATION_NODE);
+    if(!node) return NULL;
+
+    node->unaryOp.expr = expr;
+    node->unaryOp.op = op;
+    return node;
+}
+
+ASTNode *createBinaryOpNode(ASTNode *left, ASTNode *right, BinaryOpType op){
+    ASTNode *node = allocNode(BINARY_OPERATION_NODE);
+    if(!node) return NULL;
+
+    node->binaryOp.left = left;
+    node->binaryOp.right = right;
+    node->binaryOp.op = op;
+    return node;
+}
+
+ASTNode *createTernaryOpNode(ASTNode *condition, ASTNode *trueExpr, ASTNode *falseExpr){
+    ASTNode *node = allocNode(TERNARY_OPERATION_NODE);
+    if(!node) return NULL;
+
+    node->ternaryOp.condition = condition;
+    node->ternaryOp.trueExpr = trueExpr;
+    node->ternaryOp.falseExpr = falseExpr;
     return node;
 }
