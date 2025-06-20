@@ -573,3 +573,87 @@ ASTNode *createForStmtNode(ASTNode *initializer, ASTNode *condition, ASTNode *in
     node->forStmt.bodyCount = bodyCount;
     return node;
 }
+
+ASTNode *createContinueStmtNode(void){
+    ASTNode *node = allocNode(CONTINUE_NODE);
+    if(!node) return NULL;
+
+    return node;
+}
+
+ASTNode *createBreakStmtNode(void){
+    ASTNode *node = allocNode(BREAK_NODE);
+    if(!node) return NULL;
+
+    return node;
+}
+
+ASTNode *createTryStmtNode(ASTNode **tryBlock, int tryBlockCount, ASTNode **catchBlock, int catchCount){
+    ASTNode *node = allocNode(TRY_NODE);
+    if(!node) return NULL;
+
+    node->tryStmt.tryBlock = malloc(tryBlockCount * sizeof(ASTNode *));
+    if(!node->tryStmt.tryBlock){
+        free(node);
+        return NULL;
+    }
+    for(int i = 0; i < tryBlockCount; i++){
+        node->tryStmt.tryBlock[i] = tryBlock[i];
+    }
+
+    node->tryStmt.tryBlockCount = tryBlockCount;
+    node->tryStmt.catchBlock = malloc(catchCount * sizeof(ASTNode *));
+    if(!node->tryStmt.catchBlock){
+        free(node->tryStmt.tryBlock);
+        free(node);
+        return NULL;
+    }
+    for(int i = 0; i < catchCount; i++){
+        node->tryStmt.catchBlock[i] = catchBlock[i];
+    }
+
+    node->tryStmt.catchCount = catchCount;
+    return node;
+}
+
+ASTNode *createCatchStmtNode(ASTNode *exceptionVar, ASTNode **body, int bodyCount){
+    ASTNode *node = allocNode(CATCH_NODE);
+    if(!node) return NULL;
+
+    node->catchStmt.exceptionVar = exceptionVar;
+    node->catchStmt.body = malloc(bodyCount * sizeof(ASTNode *));
+    if(!node->catchStmt.body){
+        free(node);
+        return NULL;
+    }
+    for(int i = 0; i < bodyCount; i++){
+        node->catchStmt.body[i] = body[i];
+    }
+
+    node->catchStmt.bodyCount = bodyCount;
+    return node;
+}
+
+ASTNode *createThrowStmtNode(ASTNode *exceptionExpr){
+    ASTNode *node = allocNode(THROW_NODE);
+    if(!node) return NULL;
+
+    node->throwStmt.exceptionExpr = exceptionExpr;
+    return node;
+}
+
+ASTNode *createTypeOfExprNode(ASTNode *expr){
+    ASTNode *node = allocNode(TYPEOF_NODE);
+    if(!node) return NULL;
+
+    node->typeOfExpr.expr = expr;
+    return node;
+}
+
+ASTNode *createSizeOfExprNode(ASTNode *expr){
+    ASTNode *node = allocNode(SIZEOF_NODE);
+    if(!node) return NULL;
+
+    node->sizeOfExpr.expr = expr;
+    return node;
+}

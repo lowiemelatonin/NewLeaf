@@ -384,12 +384,12 @@ typedef struct ASTNode {
         struct {
             ASTNode **tryBlock;
             int tryBlockCount;
-            ASTNode **catchBlocks;
+            ASTNode **catchBlock;
             int catchCount;
         } tryStmt;
 
         struct {
-            char *exceptionVarName;
+            ASTNode *exceptionVar;
             ASTNode **body;
             int bodyCount;
         } catchStmt;
@@ -450,5 +450,12 @@ ASTNode *createDefaultStmtNode(ASTNode **body, int bodyCount);
 ASTNode *createWhileStmtNode(ASTNode *condition, ASTNode **body, int bodyCount);
 ASTNode *createDoWhileStmtNode(ASTNode **body, int bodyCount, ASTNode *condition);
 ASTNode *createForStmtNode(ASTNode *initializer, ASTNode *condition, ASTNode *increment, ASTNode **body, int bodyCount);
+ASTNode *createContinueStmtNode(void);
+ASTNode *createBreakStmtNode(void);
+ASTNode *createTryStmtNode(ASTNode **tryBlock, int tryBlockCount, ASTNode **catchBlock, int catchCount);
+ASTNode *createCatchStmtNode(ASTNode *exceptionVar, ASTNode **body, int bodyCount);
+ASTNode *createThrowStmtNode(ASTNode *exceptionExpr);
+ASTNode *createTypeOfExprNode(ASTNode *expr);
+ASTNode *createSizeOfExprNode(ASTNode *expr);
 
 #endif
