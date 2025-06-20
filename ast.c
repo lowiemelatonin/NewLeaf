@@ -517,3 +517,59 @@ ASTNode *createDefaultStmtNode(ASTNode **body, int bodyCount){
     node->defaultStmt.bodyCount = bodyCount;
     return node;
 }
+
+ASTNode *createWhileStmtNode(ASTNode *condition, ASTNode **body, int bodyCount){
+    ASTNode *node = allocNode(WHILE_NODE);
+    if(!node) return NULL;
+
+    node->whileStmt.condition = condition;
+    node->whileStmt.body = malloc(bodyCount * sizeof(ASTNode *));
+    if(!node->whileStmt.body){
+        free(node);
+        return NULL;
+    }
+    for(int i = 0; i < bodyCount; i++){
+        node->whileStmt.body[i] = body[i];
+    }
+
+    node->whileStmt.bodyCount = bodyCount;
+    return node;
+}
+
+ASTNode *createDoWhileStmtNode(ASTNode **body, int bodyCount, ASTNode *condition){
+    ASTNode *node = allocNode(DO_WHILE_NODE);
+    if(!node) return NULL;
+
+    node->doWhileStmt.body = malloc(bodyCount * sizeof(ASTNode *));
+    if(!node->doWhileStmt.body){
+        free(node);
+        return NULL;
+    }
+    for(int i = 0; i < bodyCount; i++){
+        node->doWhileStmt.body[i] = body[i];
+    }
+
+    node->doWhileStmt.bodyCount = bodyCount;
+    node->doWhileStmt.condition = condition;
+    return node;
+}
+
+ASTNode *createForStmtNode(ASTNode *initializer, ASTNode *condition, ASTNode *increment, ASTNode **body, int bodyCount){
+    ASTNode *node = allocNode(FOR_NODE);
+    if(!node) return NULL;
+
+    node->forStmt.initializer = initializer;
+    node->forStmt.condition = condition;
+    node->forStmt.increment = increment;
+    node->forStmt.body = malloc(bodyCount * sizeof(ASTNode *));
+    if(!node->forStmt.body){
+        free(node);
+        return NULL;
+    }
+    for(int i = 0; i < bodyCount; i++){
+        node->forStmt.body[i] = body[i];
+    }
+
+    node->forStmt.bodyCount = bodyCount;
+    return node;
+}

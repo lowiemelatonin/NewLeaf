@@ -447,5 +447,8 @@ ASTNode *createIfStmtNode(ASTNode *condition, ASTNode *thenBranch, ASTNode *else
 ASTNode *createSwitchStmtNode(ASTNode *expr, ASTNode **cases, int caseCount);
 ASTNode *createCaseStmtNode(ASTNode *value, ASTNode **body, int bodyCount);
 ASTNode *createDefaultStmtNode(ASTNode **body, int bodyCount);
+ASTNode *createWhileStmtNode(ASTNode *condition, ASTNode **body, int bodyCount);
+ASTNode *createDoWhileStmtNode(ASTNode **body, int bodyCount, ASTNode *condition);
+ASTNode *createForStmtNode(ASTNode *initializer, ASTNode *condition, ASTNode *increment, ASTNode **body, int bodyCount);
 
 #endif
