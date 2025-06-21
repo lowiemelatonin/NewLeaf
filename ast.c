@@ -657,3 +657,39 @@ ASTNode *createSizeOfExprNode(ASTNode *expr){
     node->sizeOfExpr.expr = expr;
     return node;
 }
+
+void freeAST(ASTNode *node){
+    if(!node) return NULL;
+
+    switch(node->type){
+        case IDENTIFIER_NODE:
+            free(node->identifier.name);
+            break;
+        case LITERAL_NODE:
+            if(node->literal.type == TYPE_STRING){
+                free(node->literal.value.stringVal);
+            }
+            break;
+        case ASSIGNMENT_NODE:
+            freeAST(node->assignment.left);
+            freeAST(node->assignment.right);
+            break;
+        case DECLARATION_NODE:
+            free(node->declaration.varName);
+            freeAST(node->declaration.varType);
+            freeAST(node->declaration.initializer);
+            break;
+        case POINTER_NODE:
+            freeAST(node->pointer.ptr);
+            break;
+        case VOID_NODE:
+            break;
+        case NULL_NODE:
+            freeASTN(node->null.typeOf);
+            break;
+        
+        default:
+            break;
+    }
+    free(node);
+}

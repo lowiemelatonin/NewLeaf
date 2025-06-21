@@ -457,5 +457,6 @@ ASTNode *createCatchStmtNode(ASTNode *exceptionVar, ASTNode **body, int bodyCoun
 ASTNode *createThrowStmtNode(ASTNode *exceptionExpr);
 ASTNode *createTypeOfExprNode(ASTNode *expr);
 ASTNode *createSizeOfExprNode(ASTNode *expr);
+void freeAST(ASTNode *node);
 
 #endif
