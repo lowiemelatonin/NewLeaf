@@ -200,6 +200,8 @@ typedef struct ASTNode {
         struct {
             ASTNode *typeOfElement;
             ASTNode *size;
+            ASTNode **elements;
+            int elementsCount;
         } array;
                 
         struct {
@@ -417,7 +419,7 @@ ASTNode *createDeclarationNode(ASTNode *varType, const char *varName, ASTNode *i
 ASTNode *createPointerNode(ASTNode *ptrTo);
 ASTNode *createNullNode(ASTNode *typeOf);
 ASTNode *createVoidNode(void);
-ASTNode *createArrayNode(ASTNode *typeOfElement, ASTNode *size);
+ASTNode *createArrayNode(ASTNode *typeOfElement, ASTNode *size, ASTNode **elements, int elementsCount);
 ASTNode *createStructNode(char *name, ASTNode **fields, int fieldsCount);
 ASTNode *createUnionNode(char *name, ASTNode **fields, int fieldsCount);
 ASTNode *createEnumNode(char *name, char **values, int *intValues, int valuesCount);

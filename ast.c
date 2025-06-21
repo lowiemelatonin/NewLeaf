@@ -87,12 +87,24 @@ ASTNode *createVoidNode(void){
     return node;
 }
 
-ASTNode *createArrayNode(ASTNode *typeOfElement, ASTNode *size){
+ASTNode *createArrayNode(ASTNode *typeOfElement, ASTNode *size, ASTNode **elements, int elementsCount){
     ASTNode *node = allocNode(ARRAY_NODE);
     if(!node) return NULL;
 
     node->array.typeOfElement = typeOfElement;
     node->array.size = size;
+    if(elementsCount > 0){
+        node->array.elements = malloc(elementsCount * sizeof(ASTNode *));
+        if(!node->array.elements){
+            free(node);
+            return NULL;
+        }
+        for(int i = 0; i < elementsCount; i++){
+            node->array.elements[i] = elements[i];
+        }
+    }else node->array.elements = NULL;
+
+    node->array.elementsCount = elementsCount;
     return node;
 }
 
@@ -685,9 +697,18 @@ void freeAST(ASTNode *node){
         case VOID_NODE:
             break;
         case NULL_NODE:
-            freeASTN(node->null.typeOf);
+            freeAST(node->null.typeOf);
             break;
-        
+        case ARRAY_NODE:
+            freeAST(node->array.size);
+            freeAST(node->array.typeOfElement);
+            for(int i = 0; i < node->array.elementsCount; i++){
+                if(node->array.elements[i]){
+                    freeAST(node->array.elements[i]);
+                }
+            }
+            free(node->array.elements);
+            break;
         default:
             break;
     }
