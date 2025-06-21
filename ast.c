@@ -709,6 +709,20 @@ void freeAST(ASTNode *node){
             }
             free(node->array.elements);
             break;
+        case STRUCT_NODE:
+            free(node->structDef.name);
+            for(int i = 0; i < node->structDef.fieldsCount; i++){
+                freeAST(node->structDef.fields[i]);
+            }
+            free(node->structDef.fields);
+            break;
+        case UNION_NODE:
+            free(node->unionDef.name);
+            for(int i = 0; i < node->unionDef.fieldsCount; i++){
+                freeAST(node->unionDef.fields[i]);
+            }
+            free(node->unionDef.fields);
+            break;
         default:
             break;
     }
