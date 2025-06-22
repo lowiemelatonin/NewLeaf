@@ -750,6 +750,48 @@ void freeAST(ASTNode *node){
             freeAST(node->fieldAccess.object);
             free(node->fieldAccess.fieldName);
             break;
+        case FUNCTION_NODE:
+            free(node->functionDef.name);
+            freeAST(node->functionDef.returnType);
+            for(int i = 0; i < node->functionDef.paramCount; i++){
+                freeAST(node->functionDef.params[i]);
+            }
+            free(node->functionDef.params);
+            for(int i = 0; i < node->functionDef.bodyCount; i++){
+                freeAST(node->functionDef.body[i]);
+            }
+            free(node->functionDef.body);
+            break;
+        case RETURN_NODE:
+            freeAST(node->returnStmt.value);
+            break;
+        case FUNCTION_CALL_NODE:
+            freeAST(node->functionCall.function);
+            for(int i = 0; i < node->functionCall.argsCount; i++){
+                freeAST(node->functionCall.args[i]);
+            }
+            free(node->functionCall.args);
+            break;
+        case LABEL_NODE:
+            free(node->labelStmt.labelName);
+            break;
+        case JUMP_NODE:
+            free(node->jumpStmt.labelName);
+            break;
+        case MALLOC_NODE:
+            freeAST(node->mallocExpr.size);
+            break;
+        case CALLOC_NODE:
+            freeAST(node->callocExpr.num);
+            freeAST(node->callocExpr.size);
+            break;
+        case REALLOC_NODE:
+            freeAST(node->reallocExpr.ptr);
+            freeAST(node->reallocExpr.size);
+            break;
+        case FREE_NODE:
+            freeAST(node->freeExpr.ptr);
+            break;
         default:
             break;
     }
