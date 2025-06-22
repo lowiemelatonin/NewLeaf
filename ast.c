@@ -819,6 +819,22 @@ void freeAST(ASTNode *node){
             freeAST(node->ternaryOp.trueExpr);
             freeAST(node->ternaryOp.falseExpr);
             break;
+        case BLOCK_NODE:
+            for(int i = 0; i < node->block.stmtCount; i++){
+                freeAST(node->block.statements[i]);
+            }
+            free(node->block.statements);
+            break;
+        case COMPOUND_EXPR_NODE:
+            for(int i = 0; i < node->compoundExpr.stmtCount; i++){
+                freeAST(node->compoundExpr.statements[i]);
+            }
+            free(node->compoundExpr.statements);
+            break;
+        case CAST_EXPR_NODE:
+            freeAST(node->castExpr.targetType);
+            freeAST(node->castExpr.value);
+            break;
         default:
             break;
     }
