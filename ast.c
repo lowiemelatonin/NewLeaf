@@ -792,6 +792,21 @@ void freeAST(ASTNode *node){
         case FREE_NODE:
             freeAST(node->freeExpr.ptr);
             break;
+        case MEMCPY_NODE:
+            freeAST(node->memcpyExpr.dest);
+            freeAST(node->memcpyExpr.src);
+            freeAST(node->memcpyExpr.size);
+            break;
+        case MEMSET_NODE:
+            freeAST(node->memsetExpr.dest);
+            freeAST(node->memsetExpr.value);
+            freeAST(node->memsetExpr.size);
+            break;
+        case MEMMOVE_NODE:
+            freeAST(node->memmoveExpr.dest);
+            freeAST(node->memmoveExpr.src);
+            freeAST(node->memmoveExpr.size);
+            break;
         default:
             break;
     }
