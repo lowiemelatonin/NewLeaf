@@ -807,6 +807,18 @@ void freeAST(ASTNode *node){
             freeAST(node->memmoveExpr.src);
             freeAST(node->memmoveExpr.size);
             break;
+        case UNARY_OPERATION_NODE:
+            freeAST(node->unaryOp.expr);
+            break;
+        case BINARY_OPERATION_NODE:
+            freeAST(node->binaryOp.left);
+            freeAST(node->binaryOp.right);
+            break;
+        case TERNARY_OPERATION_NODE:
+            freeAST(node->ternaryOp.condition);
+            freeAST(node->ternaryOp.trueExpr);
+            freeAST(node->ternaryOp.falseExpr);
+            break;
         default:
             break;
     }
