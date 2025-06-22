@@ -723,6 +723,33 @@ void freeAST(ASTNode *node){
             }
             free(node->unionDef.fields);
             break;
+        case ENUM_NODE:
+            free(node->enumDef.name);
+            for(int i = 0; i < node->enumDef.valuesCount; i++){
+                free(node->enumDef.values[i]);
+            }
+            free(node->enumDef.intValues);
+            free(node->enumDef.values);
+            break;
+        case TYPEDEF_NODE:
+            free(node->typedefDef.alias);
+            freeAST(node->typedefDef.original);
+            break;
+        case IMPL_NODE:
+            free(node->implDef.structName);
+            for(int i = 0; i < node->implDef.methodsCount; i++){
+                freeAST(node->implDef.methods[i]);
+            }
+            free(node->implDef.methods);
+            break;
+        case ARRAY_ACCESS_NODE:
+            freeAST(node->arrayAccess.array);
+            freeAST(node->arrayAccess.index);
+            break;
+        case FIELD_ACCESS_NODE:
+            freeAST(node->fieldAccess.object);
+            free(node->fieldAccess.fieldName);
+            break;
         default:
             break;
     }
