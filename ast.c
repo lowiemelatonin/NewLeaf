@@ -883,6 +883,32 @@ void freeAST(ASTNode *node){
             }
             free(node->forStmt.body);
             break;
+        case TRY_NODE:
+            for(int i = 0; i < node->tryStmt.tryBlockCount; i++){
+                freeAST(node->tryStmt.tryBlock[i]);
+            }
+            free(node->tryStmt.tryBlock);
+            for(int i = 0; i < node->tryStmt.catchCount; i++){
+                freeAST(node->tryStmt.catchBlock[i]);
+            }
+            free(node->tryStmt.catchBlock);
+            break;
+        case CATCH_NODE:
+            freeAST(node->catchStmt.exceptionVar);
+            for(int i = 0; i < node->catchStmt.bodyCount; i++){
+                freeAST(node->catchStmt.body[i]);
+            }
+            free(node->catchStmt.body);
+            break;
+        case THROW_NODE:
+            freeAST(node->throwStmt.exceptionExpr);
+            break;
+        case TYPEOF_NODE:
+            freeAST(node->typeOfExpr.expr);
+            break;
+        case SIZEOF_NODE:
+            freeAST(node->sizeOfExpr.expr);
+            break;
         default:
             break;
     }
