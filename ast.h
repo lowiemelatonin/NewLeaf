@@ -105,6 +105,14 @@ typedef enum {
 } AssignmentOpType;
 
 typedef enum {
+    STORAGE_CONST = 1 << 0,
+    STORAGE_STATIC = 1 << 1,
+    STORAGE_EXTERN = 1 << 2,
+    STORAGE_VOLATILE = 1 << 3,
+    STORAGE_ATOMIC = 1 << 4
+} StorageFlags;
+
+typedef enum {
     IDENTIFIER_NODE,
     LITERAL_NODE,
     ASSIGNMENT_NODE,
@@ -195,6 +203,7 @@ typedef struct ASTNode {
             ASTNode *varType;
             char *varName;
             ASTNode *initializer;
+            int storageFlags;
         } declaration;
 
         struct {
@@ -260,6 +269,7 @@ typedef struct ASTNode {
             int paramCount;
             ASTNode **body;
             int bodyCount;
+            int storageFlags;
         } functionDef;
         
         struct {
@@ -431,7 +441,7 @@ typedef struct ASTNode {
 ASTNode *createIdentifierNode(const char *name);
 ASTNode *createLiteralNode(PrimitiveType type, PrimitiveValue value);
 ASTNode *createAssignmentNode(ASTNode *left, ASTNode *right, AssignmentOpType op);
-ASTNode *createDeclarationNode(ASTNode *varType, const char *varName, ASTNode *initializer);
+ASTNode *createDeclarationNode(ASTNode *varType, const char *varName, ASTNode *initializer, int storageFlags);
 ASTNode *createPointerNode(ASTNode *ptrTo);
 ASTNode *createNullNode(ASTNode *typeOf);
 ASTNode *createVoidNode(void);
@@ -443,7 +453,7 @@ ASTNode *createTypedefNode(char *alias, ASTNode *original);
 ASTNode *createImplNode(char *structName, ASTNode **methods, int methodsCount);
 ASTNode *createArrayAccessNode(ASTNode *array, ASTNode *index);
 ASTNode *createFieldAccessNode(ASTNode *object, char *fieldName, bool isPointerAccess);
-ASTNode *createFunctionNode(char *name, ASTNode *returnType, ASTNode **params, int paramCount, ASTNode **body, int bodyCount);
+ASTNode *createFunctionNode(char *name, ASTNode *returnType, ASTNode **params, int paramCount, ASTNode **body, int bodyCount, int storageFlags);
 ASTNode *createReturnNode(ASTNode *value);
 ASTNode *createFunctionCallNode(ASTNode *function, ASTNode **args, int argsCount);
 ASTNode *createLabelNode(char *labelName);

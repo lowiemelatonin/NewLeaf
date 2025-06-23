@@ -50,7 +50,7 @@ ASTNode *createAssignmentNode(ASTNode *left, ASTNode *right, AssignmentOpType op
     return node;
 }
 
-ASTNode *createDeclarationNode(ASTNode *varType, const char *varName, ASTNode *initializer){
+ASTNode *createDeclarationNode(ASTNode *varType, const char *varName, ASTNode *initializer, int storageFlags){
     ASTNode *node = allocNode(DECLARATION_NODE);
     if(!node) return NULL;
 
@@ -61,6 +61,7 @@ ASTNode *createDeclarationNode(ASTNode *varType, const char *varName, ASTNode *i
         return NULL;
     }
     node->declaration.initializer = initializer;
+    node->declaration.storageFlags = storageFlags;
     return node;
 }
 
@@ -244,7 +245,7 @@ ASTNode *createFieldAccessNode(ASTNode *object, char *fieldName, bool isPointerA
     return node;
 }
 
-ASTNode *createFunctionNode(char *name, ASTNode *returnType, ASTNode **params, int paramCount, ASTNode **body, int bodyCount){
+ASTNode *createFunctionNode(char *name, ASTNode *returnType, ASTNode **params, int paramCount, ASTNode **body, int bodyCount, int storageFlags){
     ASTNode *node = allocNode(FUNCTION_NODE);
     if(!node) return NULL;
 
@@ -278,6 +279,7 @@ ASTNode *createFunctionNode(char *name, ASTNode *returnType, ASTNode **params, i
         node->functionDef.body[i] = body[i];
     }
     node->functionDef.bodyCount = bodyCount;
+    node->functionDef.storageFlags = storageFlags;
     return node;
 }
 
