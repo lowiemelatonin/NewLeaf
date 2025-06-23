@@ -159,7 +159,9 @@ typedef enum {
     THROW_NODE,
 
     TYPEOF_NODE,
-    SIZEOF_NODE
+    SIZEOF_NODE,
+
+    LAMBDA_NODE
 
 } NodeType;
 
@@ -408,6 +410,14 @@ typedef struct ASTNode {
             ASTNode *expr;
         } sizeOfExpr;
         
+        struct {
+            ASTNode *returnType;
+            ASTNode **params;
+            int paramCount;
+            ASTNode **body;
+            int bodyCount;
+        } lambda;
+
     };
 
 } ASTNode;
@@ -459,6 +469,7 @@ ASTNode *createCatchStmtNode(ASTNode *exceptionVar, ASTNode **body, int bodyCoun
 ASTNode *createThrowStmtNode(ASTNode *exceptionExpr);
 ASTNode *createTypeOfExprNode(ASTNode *expr);
 ASTNode *createSizeOfExprNode(ASTNode *expr);
+ASTNode *createLambdaNode(ASTNode *returnType, ASTNode **params, int paramCount, ASTNode **body, int bodyCount);
 void freeAST(ASTNode *node);
 
 #endif

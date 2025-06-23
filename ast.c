@@ -670,6 +670,34 @@ ASTNode *createSizeOfExprNode(ASTNode *expr){
     return node;
 }
 
+ASTNode *createLambdaNode(ASTNode *returnType, ASTNode **params, int paramCount, ASTNode **body, int bodyCount){
+    ASTNode *node = allocNode(LAMBDA_NODE);
+    if(!node) return NULL;
+
+    node->lambda.returnType = returnType;
+    node->lambda.params = malloc(paramCount * sizeof(ASTNode *));
+    if(!node->lambda.params){
+        free(node);
+        return NULL;
+    }
+    for(int i = 0; i < paramCount; i++){
+        node->lambda.params[i] = params[i];
+    }
+
+    node->lambda.paramCount = paramCount;
+    node->lambda.body = malloc(bodyCount * sizeof(ASTNode *));
+    if(!node->lambda.body){
+        free(node->lambda.params);
+        free(node);
+        return NULL;
+    }
+    for(int i = 0; i < bodyCount; i++){
+        node->lambda.body[i] = body[i];
+    }
+    node->lambda.bodyCount = bodyCount;
+    return node;
+}
+
 void freeAST(ASTNode *node){
     if(!node) return NULL;
 
@@ -908,6 +936,17 @@ void freeAST(ASTNode *node){
             break;
         case SIZEOF_NODE:
             freeAST(node->sizeOfExpr.expr);
+            break;
+        case LAMBDA_NODE:
+            freeAST(node->lambda.returnType);
+            for(int i = 0; i < node->lambda.paramCount; i++){
+                freeAST(node->lambda.params[i]);
+            }
+            free(node->lambda.params);
+            for(int i = 0; i < node->lambda.bodyCount; i++){
+                freeAST(node->lambda.body[i]);
+            }
+            free(node->lambda.body);
             break;
         default:
             break;
