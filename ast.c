@@ -835,6 +835,54 @@ void freeAST(ASTNode *node){
             freeAST(node->castExpr.targetType);
             freeAST(node->castExpr.value);
             break;
+        case IF_NODE:
+            freeAST(node->ifStmt.condition);
+            freeAST(node->ifStmt.thenBranch);
+            freeAST(node->ifStmt.elseBranch);
+            break;
+        case SWITCH_NODE:
+            freeAST(node->switchStmt.expr);
+            for(int i = 0; i < node->switchStmt.caseCount; i++){
+                freeAST(node->switchStmt.cases[i]);
+            }
+            free(node->switchStmt.cases);
+            break;
+        case CASE_NODE:
+            freeAST(node->caseStmt.value);
+            for(int i = 0; i < node->caseStmt.bodyCount; i++){
+                freeAST(node->caseStmt.body[i]);
+            }
+            free(node->caseStmt.body);
+            break;
+        case DEFAULT_NODE:
+            for(int i = 0; i < node->defaultStmt.bodyCount; i++){
+                freeAST(node->defaultStmt.body[i]);
+            }
+            free(node->defaultStmt.body);
+            break;
+        case WHILE_NODE:
+            freeAST(node->whileStmt.condition);
+            for(int i = 0; i < node->whileStmt.bodyCount; i++){
+                freeAST(node->whileStmt.body[i]);
+            }
+            free(node->whileStmt.body);
+            break;
+        case DO_WHILE_NODE:
+            for(int i = 0; i < node->doWhileStmt.bodyCount; i++){
+                freeAST(node->doWhileStmt.body[i]);
+            }
+            free(node->doWhileStmt.body);
+            freeAST(node->doWhileStmt.condition);
+            break;
+        case FOR_NODE:
+            freeAST(node->forStmt.initializer);
+            freeAST(node->forStmt.condition);
+            freeAST(node->forStmt.increment);
+            for(int i = 0; i < node->forStmt.bodyCount; i++){
+                freeAST(node->forStmt.body[i]);
+            }
+            free(node->forStmt.body);
+            break;
         default:
             break;
     }
