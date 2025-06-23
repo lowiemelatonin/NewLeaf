@@ -4,6 +4,7 @@
 #include <stdbool.h>
 
 typedef enum {
+    TYPE_BYTE,
     TYPE_BOOL,
     TYPE_SHORT,
     TYPE_USHORT,
@@ -17,12 +18,15 @@ typedef enum {
     TYPE_DOUBLE,
     TYPE_LONG_DOUBLE,
     TYPE_SIGNED_CHAR,
-    TYPE_CHAR_NODE,
+    TYPE_CHAR,
     TYPE_UNSIGNED_CHAR,
     TYPE_STRING,
+    TYPE_ARCH,
+    TYPE_UNSIGNED_ARCH
 } PrimitiveType;
 
 typedef union {
+    unsigned char byteVal;
     bool boolVal;
     short shortVal;
     unsigned short uShortVal;
@@ -39,6 +43,8 @@ typedef union {
     char charVal;
     unsigned char uCharVal;
     char *stringVal;
+    intptr_t archVal;
+    uintptr_t uArchVal;
 } PrimitiveValue;
 
 typedef enum {
