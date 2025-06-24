@@ -31,7 +31,29 @@ typedef enum {
 
     TOKEN_IDENTIFIER,       // variable names, functions, types, params...
     TOKEN_NUMBER,           // for numeric types
-    TOKEN_STRING_LITERAL    // strings
+    TOKEN_STRING_LITERAL,   // strings
+    
+    TOKEN_LPAREN,           // (
+    TOKEN_RPAREN,           // )
+    TOKEN_LBRACE,           // {
+    TOKEN_RBRACE,           // }
+    TOKEN_LBRACKET,         // [
+    TOKEN_RBRACKET,         // ]
+    TOKEN_COMMA,            // ,
+    TOKEN_SEMICOLON,        // ;
+    TOKEN_COLON,            // :
+    TOKEN_DOT,              // .
+    TOKEN_ARROW,            // ->
+
+    TOKEN_PLUS,             // +
+    TOKEN_MINUS,            // -
+    TOKEN_STAR,             // *
+    TOKEN_SLASH,            // /
+    TOKEN_PERCENT,          // %
+
+    TOKEN_AND,              // &&
+    TOKEN_OR,               // ||
+    TOKEN_NOT               // !
 } TokenType;
 
 #endif
