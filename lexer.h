@@ -19,9 +19,19 @@ typedef enum {
     TOKEN_CHAR,             // char
     TOKEN_UNSIGNED_CHAR,    // uchar
     TOKEN_STRING,           // string
+
     TOKEN_ARCH,             // arch
     TOKEN_UNSIGNED_ARCH,    // uarch
 
+    TOKEN_CONST,            // const
+    TOKEN_STATIC,           // static
+    TOKEN_EXTERN,           // extern
+    TOKEN_VOLATILE,         // volatile
+    TOKEN_ATOMIC,           // atomic
+
+    TOKEN_IDENTIFIER,       // variable names, functions, types, params...
+    TOKEN_NUMBER,           // for numeric types
+    TOKEN_STRING_LITERAL    // strings
 } TokenType;
 
 #endif
