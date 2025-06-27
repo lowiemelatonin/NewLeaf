@@ -2,6 +2,7 @@
 #define LEXER_H
 
 #include "ast.h"
+#include <stddef.h>
 
 typedef enum {
     TOKEN_NULL,                 // null
@@ -131,6 +132,13 @@ typedef enum {
     TOKEN_MEMSET,               // memset
     TOKEN_MEMMOV                // memmov
 } TokenType;
+
+typedef struct {
+    const char *src;
+    size_t pos;
+    int line;
+    int column;
+} Lexer;
 
 typedef struct {
     TokenType type;
