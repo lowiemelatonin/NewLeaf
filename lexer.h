@@ -2,6 +2,7 @@
 #define LEXER_H
 
 typedef enum {
+    TOKEN_NULL,                 // null
     TOKEN_VOID,                 // void
     TOKEN_BYTE,                 // byte
     TOKEN_BOOL,                 // bool
@@ -23,6 +24,12 @@ typedef enum {
 
     TOKEN_ARCH,                 // arch
     TOKEN_UNSIGNED_ARCH,        // uarch
+
+    TOKEN_STRUCT,               // struct
+    TOKEN_IMPL,                 // impl
+    TOKEN_UNION,                // union
+    TOKEN_ENUM,                 // enum
+    TOKEN_TYPEDEF,              // typedef
 
     TOKEN_CONST,                // const
     TOKEN_STATIC,               // static
@@ -88,6 +95,39 @@ typedef enum {
     TOKEN_QUESTION,             // ?
     TOKEN_BACKSLASH,            // \ 
 
+    TOKEN_IF,                   // if
+    TOKEN_ELSE,                 // else
+    TOKEN_WHILE,                // while
+    TOKEN_DO,                   // do
+    TOKEN_FOR,                  // for
+    TOKEN_SWITCH,               // switch
+    TOKEN_CASE,                 // case
+    TOKEN_DEFAULT,              // default
+    TOKEN_CONTINUE,             // continue
+    TOKEN_BREAK,                // break
+
+    TOKEN_LABEL,                // label
+    TOKEN_JUMP,                 // jump
+
+    TOKEN_TRY,                  // try
+    TOKEN_CATCH,                // catch
+    TOKEN_THROW,                // throw
+
+    TOKEN_FUNCTION,             // fun (alternative to void)
+    TOKEN_LAMBDA,               // lambda
+    TOKEN_RETURN,               // return
+
+    TOKEN_TYPEOF,               // typeof
+    TOKEN_SIZEOF,               // sizeof
+
+    TOKEN_MALLOC,               // malloc
+    TOKEN_CALLOC,               // calloc
+    TOKEN_REALLOC,              // realloc
+    TOKEN_FREE,                 // free
+
+    TOKEN_MEMCPY,               // memcpy
+    TOKEN_MEMSET,               // memset
+    TOKEN_MEMMOV,               // memmov
 } TokenType;
 
 #endif
