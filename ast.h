@@ -192,7 +192,7 @@ typedef struct ASTNode {
             PrimitiveType type;
             PrimitiveValue value;
         } literal;
-        
+
         struct {
             ASTNode *left;
             ASTNode *right;
@@ -209,7 +209,7 @@ typedef struct ASTNode {
         struct {
             ASTNode *ptr;
         } pointer;
-        
+
         struct {
             ASTNode *typeOf;
         } null;
@@ -220,7 +220,7 @@ typedef struct ASTNode {
             ASTNode **elements;
             int elementsCount;
         } array;
-                
+
         struct {
             char *name;
             ASTNode **fields;
@@ -239,7 +239,7 @@ typedef struct ASTNode {
             int *intValues;
             int valuesCount;
         } enumDef;
-                
+
         struct {
             char *alias;
             ASTNode *original;
@@ -250,7 +250,7 @@ typedef struct ASTNode {
             ASTNode **methods;
             int methodsCount;
         } implDef;
-        
+
         struct {
             ASTNode *array;
             ASTNode *index;
@@ -261,7 +261,7 @@ typedef struct ASTNode {
             char *fieldName;
             bool isPointerAccess;
         } fieldAccess;
-        
+
         struct {
             char *name;
             ASTNode *returnType;
@@ -271,7 +271,7 @@ typedef struct ASTNode {
             int bodyCount;
             int storageFlags;
         } functionDef;
-        
+
         struct {
             ASTNode *value;
         } returnStmt;
@@ -375,18 +375,18 @@ typedef struct ASTNode {
             ASTNode **body;
             int bodyCount;
         } caseStmt;
-        
+
         struct {
             ASTNode **body;
             int bodyCount;
         } defaultStmt;
-        
+
         struct {
             ASTNode *condition;
             ASTNode **body;
             int bodyCount;
         } whileStmt;
-        
+
         struct {
             ASTNode **body;
             int bodyCount;
@@ -425,7 +425,7 @@ typedef struct ASTNode {
         struct {
             ASTNode *expr;
         } sizeOfExpr;
-        
+
         struct {
             ASTNode *returnType;
             ASTNode **params;

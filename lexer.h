@@ -1,6 +1,8 @@
 #ifndef LEXER_H
 #define LEXER_H
 
+#include "ast.h"
+
 typedef enum {
     TOKEN_NULL,                 // null
     TOKEN_VOID,                 // void
@@ -127,7 +129,20 @@ typedef enum {
 
     TOKEN_MEMCPY,               // memcpy
     TOKEN_MEMSET,               // memset
-    TOKEN_MEMMOV,               // memmov
+    TOKEN_MEMMOV                // memmov
 } TokenType;
+
+typedef struct {
+    TokenType type;
+
+    union {
+        PrimitiveType value;
+        char *identifier;
+    };
+    
+    char *lexeme;
+    int line;
+    int column;
+} Token;
 
 #endif
