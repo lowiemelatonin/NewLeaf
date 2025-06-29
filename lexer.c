@@ -1,5 +1,5 @@
 #include "lexer.h"
-#include <string>
+#include <string.h>
 
 static char peek(Lexer *lexer){
     return lexer->src[lexer->pos];
@@ -25,6 +25,27 @@ void ignoreWhiteSpace(Lexer *lexer){
     if(isspace(peek(lexer))){
         advance(lexer);
     }
+}
+
+Token createToken(Lexer *lexer, TokenType type, char *lexeme, PrimitiveType pType, PrimitiveValue pValue, char *identifier){
+    Token token;
+    token.type = type;
+
+    token.lexeme = strdup(lexeme);
+    token.line = lexer->line;
+    token.column = lexer->column;
+    
+    if(type == TOKEN_IDENTIFIER){
+        token.identifier = strdup(identifier);
+    } else if(type == TOKEN_NUMBER || type == TOKEN_STRING_LITERAL){
+        token.literal.pType = pType;
+        if(pType == TYPE_STRING && pValue.stringVal != NULL){
+            token.literal.pValue.stringVal = strdup(pValue.stringVal);
+        } else{
+            token.literal.pValue = pValue;
+        }
+    }
+    return token;
 }
 
 void initLexer(Lexer *lexer, char *src){

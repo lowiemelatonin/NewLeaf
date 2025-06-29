@@ -144,7 +144,11 @@ typedef struct {
     TokenType type;
 
     union {
-        PrimitiveType value;
+        struct {
+            PrimitiveType pType;
+            PrimitiveValue pValue;
+        } literal;
+
         char *identifier;
     };
     
@@ -153,5 +157,7 @@ typedef struct {
     int column;
 } Token;
 
+void ignoreWhiteSpace(Lexer *lexer);
+Token createToken(Lexer *lexer, TokenType type, char *lexeme, PrimitiveType pType, PrimitiveValue pValue, char *identifier);
 void initLexer(Lexer *lexer, char *src);
 #endif
