@@ -701,7 +701,7 @@ ASTNode *createLambdaNode(ASTNode *returnType, ASTNode **params, int paramCount,
 }
 
 void freeAST(ASTNode *node){
-    if(!node) return NULL;
+    if(!node) return;
 
     switch(node->type){
         case IDENTIFIER_NODE:

@@ -130,34 +130,34 @@ typedef enum {
 
     TOKEN_MEMCPY,               // memcpy
     TOKEN_MEMSET,               // memset
-    TOKEN_MEMMOV                // memmov
+    TOKEN_MEMMOVE               // memmove
 } TokenType;
 
 typedef struct {
-    const char *src;
+    char *src;
     size_t pos;
     int line;
     int column;
 } Lexer;
 
+typedef union {
+    struct {
+        PrimitiveType type;
+        PrimitiveValue value;
+    } literal;
+
+    char *identifier;
+} TokenData;
+
 typedef struct {
     TokenType type;
-
-    union {
-        struct {
-            PrimitiveType pType;
-            PrimitiveValue pValue;
-        } literal;
-
-        char *identifier;
-    };
-    
+    TokenData data;
     char *lexeme;
     int line;
     int column;
 } Token;
 
-void ignoreWhiteSpace(Lexer *lexer);
-Token createToken(Lexer *lexer, TokenType type, char *lexeme, PrimitiveType pType, PrimitiveValue pValue, char *identifier);
+Token createToken(Lexer *lexer, TokenType type, TokenData data, char *lexeme);
 void initLexer(Lexer *lexer, char *src);
+
 #endif
