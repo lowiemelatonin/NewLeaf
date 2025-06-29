@@ -153,4 +153,5 @@ typedef struct {
     int column;
 } Token;
 
+void initLexer(Lexer *lexer, char *src);
 #endif
