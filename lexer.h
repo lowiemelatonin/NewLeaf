@@ -3,6 +3,7 @@
 
 #include "ast.h"
 #include <stddef.h>
+#include <ctype.h>
 
 typedef enum {
     TOKEN_NULL,                 // null

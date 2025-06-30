@@ -1,5 +1,6 @@
 #include "lexer.h"
 #include <string.h>
+#include <ctype.h>
 
 Token createToken(Lexer *lexer, TokenType type, TokenData data, char *lexeme){
     Token token;
@@ -20,6 +21,11 @@ char peek(Lexer *lexer){
     return lexer->src[lexer->pos];
 }
 
+char peekNext(Lexer *lexer){
+    if(lexer->src[lexer->pos + 1] == '\0') return '\0';
+    return lexer->src[lexer->pos + 1];
+}
+
 char advance(Lexer *lexer){
     char current = lexer->src[lexer->pos];
     if(current == '\0') return '\0';
@@ -32,6 +38,12 @@ char advance(Lexer *lexer){
         lexer->column++;
     }
     return current;
+}
+
+void skipWhiteSpace(Lexer *lexer){
+    while(isspace(lexer->src[lexer->pos])){
+        advance(lexer);
+    }
 }
 
 bool isAtEnd(Lexer *lexer){

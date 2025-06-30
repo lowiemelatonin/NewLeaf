@@ -700,6 +700,15 @@ ASTNode *createLambdaNode(ASTNode *returnType, ASTNode **params, int paramCount,
     return node;
 }
 
+ASTNode *createImportNode(char *libName){
+    ASTNode *node = allocNode(INCLUDE_NODE);
+    node->include.libName = strdup(libName);
+    if(!node->include.libName){
+        free(node);
+        return NULL;
+    }
+}
+
 void freeAST(ASTNode *node){
     if(!node) return;
 
@@ -949,6 +958,9 @@ void freeAST(ASTNode *node){
                 freeAST(node->lambda.body[i]);
             }
             free(node->lambda.body);
+            break;
+        case INCLUDE_NODE:
+            free(node->include.libName);
             break;
         default:
             break;

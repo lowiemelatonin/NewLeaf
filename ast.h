@@ -175,7 +175,8 @@ typedef enum {
     TYPEOF_NODE,
     SIZEOF_NODE,
 
-    LAMBDA_NODE
+    LAMBDA_NODE,
+    INCLUDE_NODE
 
 } NodeType;
 
@@ -434,6 +435,10 @@ typedef struct ASTNode {
             int bodyCount;
         } lambda;
 
+        struct {
+            char *libName;
+        } include;
+
     };
 
 } ASTNode;
@@ -486,6 +491,7 @@ ASTNode *createThrowStmtNode(ASTNode *exceptionExpr);
 ASTNode *createTypeOfExprNode(ASTNode *expr);
 ASTNode *createSizeOfExprNode(ASTNode *expr);
 ASTNode *createLambdaNode(ASTNode *returnType, ASTNode **params, int paramCount, ASTNode **body, int bodyCount);
+ASTNode *createImportNode(char *libName);
 void freeAST(ASTNode *node);
 
 #endif
