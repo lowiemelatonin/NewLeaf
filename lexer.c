@@ -20,6 +20,24 @@ char peek(Lexer *lexer){
     return lexer->src[lexer->pos];
 }
 
+char advance(Lexer *lexer){
+    char current = lexer->src[lexer->pos];
+    if(current == '\0') return '\0';
+
+    lexer->pos++;
+    if(current == '\n'){
+        lexer->line++;
+        lexer->column = 1;
+    } else{
+        lexer->column++;
+    }
+    return current;
+}
+
+bool isAtEnd(Lexer *lexer){
+    return lexer->src[lexer->pos] == '\0';
+}
+
 void initLexer(Lexer *lexer, char *src){
     lexer->src = strdup(src);
     lexer->pos = 0;
