@@ -1,6 +1,7 @@
 #include "lexer.h"
 #include <string.h>
 #include <ctype.h>
+#include <stdbool.h>
 
 Token createToken(Lexer *lexer, TokenType type, TokenData data, char *lexeme){
     Token token;
@@ -48,6 +49,14 @@ void skipWhiteSpace(Lexer *lexer){
 
 bool isAtEnd(Lexer *lexer){
     return lexer->src[lexer->pos] == '\0';
+}
+
+bool match(Lexer *lexer, char expected){
+    if(isAtEnd(lexer)) return false;
+    if(peek(lexer) != expected) return false;
+    
+    advance(lexer);
+    return true;
 }
 
 void initLexer(Lexer *lexer, char *src){
