@@ -145,6 +145,18 @@ Token lexIdentifier(Lexer *lexer){
 
     TokenType type = TOKEN_IDENTIFIER;
     #define KeyWord(str, tok) if(strcmp(text, str) == 0) type = tok;
+    KeyWord("struct", TOKEN_STRUCT);
+    KeyWord("impl", TOKEN_IMPL);
+    KeyWord("union", TOKEN_UNION);
+    KeyWord("enum", TOKEN_ENUM);
+    KeyWord("typedef", TOKEN_TYPEDEF);
+
+    KeyWord("const", TOKEN_CONST);
+    KeyWord("static", TOKEN_STATIC);
+    KeyWord("extern", TOKEN_EXTERN);
+    KeyWord("volatile", TOKEN_VOLATILE);
+    KeyWord("atomic", TOKEN_ATOMIC);
+
     KeyWord("if", TOKEN_IF);
     KeyWord("else", TOKEN_ELSE);
     KeyWord("while", TOKEN_WHILE);
@@ -156,6 +168,28 @@ Token lexIdentifier(Lexer *lexer){
     KeyWord("continue", TOKEN_CONTINUE);
     KeyWord("break", TOKEN_BREAK);
 
+    KeyWord("label", TOKEN_LABEL);
+    KeyWord("jump", TOKEN_JUMP);
+
+    KeyWord("try", TOKEN_TRY);
+    KeyWord("catch", TOKEN_CATCH);
+    KeyWord("throw", TOKEN_THROW);
+
+    KeyWord("fun", TOKEN_FUNCTION);
+    KeyWord("lambda", TOKEN_LAMBDA);
+    KeyWord("return", TOKEN_RETURN);
+
+    KeyWord("typeof", TOKEN_TYPEOF);
+    KeyWord("sizeof", TOKEN_SIZEOF);
+
+    KeyWord("malloc", TOKEN_MALLOC);
+    KeyWord("calloc", TOKEN_CALLOC);
+    KeyWord("realloc", TOKEN_REALLOC);
+    KeyWord("free", TOKEN_FREE);
+
+    KeyWord("memcpy", TOKEN_MEMCPY);
+    KeyWord("memset", TOKEN_MEMSET);
+    KeyWord("memmove", TOKEN_MEMMOVE);
     // gonna continue soon to add new keywords
     #undef KeyWord;
 
