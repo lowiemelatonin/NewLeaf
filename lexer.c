@@ -2,6 +2,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 Token createToken(Lexer *lexer, TokenType type, TokenData data, char *lexeme){
     Token token;
@@ -64,4 +65,68 @@ void initLexer(Lexer *lexer, char *src){
     lexer->pos = 0;
     lexer->column = 1;
     lexer->line = 1;
+}
+
+Token lexNumber(Lexer *lexer){
+    size_t start = lexer->pos;
+    bool isFloat = false;
+
+    while(isdigit(peek(lexer))){
+        advance(lexer);
+    }
+
+    if(peek(lexer) == '.' && isdigit(peekNext(lexer))){
+        isFloat = true;
+        advance(lexer);
+
+        while(isdigit(peek(lexer))){
+            advance(lexer);
+        }
+    }
+    size_t len = lexer->pos - start;
+    char *numStr = malloc(len + 1);
+
+    if(!numStr) return createToken(lexer, TOKEN_NULL, (TokenData){0}, "");
+    memcpy(numStr, &lexer->src[start], len);
+    numStr[len] = '\0';
+
+    TokenData data;
+    if(isFloat){
+        data.literal.type = TYPE_DOUBLE;
+        data.literal.value.doubleVal = atof(numStr);
+    } else{
+        data.literal.type = TYPE_INT;
+        data.literal.value.intVal = atoi(numStr);
+    }
+
+    Token token = createToken(lexer, TOKEN_NUMBER, data, numStr);
+    free(numStr);
+    return token;
+}
+
+Token lexString(Lexer *lexer){
+    size_t start = lexer->pos;
+    while(!isAtEnd(lexer) && peek(lexer) != '"'){
+        if(peek(lexer) == '\\' && peekNext(lexer) == '"') advance(lexer);
+        advance(lexer);
+    }
+
+    if(isAtEnd(lexer)){
+        return createToken(lexer, TOKEN_NULL, (TokenData){0}, "");
+    }
+    
+    advance(lexer);
+    size_t len = lexer->pos - start - 1;
+    char *str = malloc(len + 1);
+    if(!str) return createToken(lexer, TOKEN_NULL, (TokenData){0}, "");
+
+    memcpy(str, &lexer->src[start], len);
+    str[len] = '\0';
+
+    TokenData data = {0};
+    data.literal.type = TYPE_STRING;
+    data.literal.value.stringVal = strdup(str);
+
+    Token token = createToken(lexer, TOKEN_STRING_LITERAL, data, str);
+    return token;
 }
