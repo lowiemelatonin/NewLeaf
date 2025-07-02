@@ -130,3 +130,41 @@ Token lexString(Lexer *lexer){
     Token token = createToken(lexer, TOKEN_STRING_LITERAL, data, str);
     return token;
 }
+
+Token lexIdentifier(Lexer *lexer){
+    size_t start = lexer->pos;
+    while(isalnum(peek(lexer)) || peek(lexer) == '_'){
+        advance(lexer);
+    }
+
+    size_t len = lexer->pos - start;
+    char *text = malloc(len + 1);
+    if(!text) return createToken(lexer, TOKEN_NULL, (TokenData){0}, "");
+    memcpy(text, &lexer->src[start], len);
+    text[len] = '\0';
+
+    TokenType type = TOKEN_IDENTIFIER;
+    #define KeyWord(str, tok) if(strcmp(text, str) == 0) type = tok;
+    KeyWord("if", TOKEN_IF);
+    KeyWord("else", TOKEN_ELSE);
+    KeyWord("while", TOKEN_WHILE);
+    KeyWord("do", TOKEN_DO);
+    KeyWord("for", TOKEN_FOR);
+    KeyWord("switch", TOKEN_SWITCH);
+    KeyWord("case", TOKEN_CASE);
+    KeyWord("default", TOKEN_DEFAULT);
+    KeyWord("continue", TOKEN_CONTINUE);
+    KeyWord("break", TOKEN_BREAK);
+
+    // gonna continue soon to add new keywords
+    #undef KeyWord;
+
+    TokenData data = {0};
+    if(type == TOKEN_IDENTIFIER){
+        data.identifier = strdup(text);
+    }
+
+    Token token = createToken(lexer, type, data, text);
+    free(text);
+    return token;
+}
