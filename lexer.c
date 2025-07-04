@@ -145,6 +145,30 @@ Token lexIdentifier(Lexer *lexer){
 
     TokenType type = TOKEN_IDENTIFIER;
     #define KeyWord(str, tok) if(strcmp(text, str) == 0) type = tok;
+
+    KeyWord("null", TOKEN_NULL);
+    KeyWord("void", TOKEN_VOID);
+    KeyWord("byte", TOKEN_BYTE);
+    KeyWord("bool", TOKEN_BOOL);
+    KeyWord("short", TOKEN_SHORT);
+    KeyWord("ushort", TOKEN_USHORT);
+    KeyWord("int", TOKEN_INT);
+    KeyWord("uint", TOKEN_UINT);
+    KeyWord("long", TOKEN_LONG);
+    KeyWord("ulong", TOKEN_ULONG);
+    KeyWord("longlong", TOKEN_LONG_LONG);
+    KeyWord("ulonglong", TOKEN_ULONG_LONG);
+    KeyWord("float", TOKEN_FLOAT);
+    KeyWord("double", TOKEN_DOUBLE);
+    KeyWord("longdouble", TOKEN_LONG_DOUBLE);
+    KeyWord("schar", TOKEN_SIGNED_CHAR);
+    KeyWord("char", TOKEN_CHAR);
+    KeyWord("uchar", TOKEN_UNSIGNED_CHAR);
+    KeyWord("string", TOKEN_STRING);
+    
+    KeyWord("arch", TOKEN_ARCH);
+    KeyWord("uarch", TOKEN_UNSIGNED_ARCH);
+
     KeyWord("struct", TOKEN_STRUCT);
     KeyWord("impl", TOKEN_IMPL);
     KeyWord("union", TOKEN_UNION);
