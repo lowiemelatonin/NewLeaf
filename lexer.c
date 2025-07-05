@@ -250,4 +250,39 @@ Token nextToken(Lexer *lexer){
     if(current == '"' || current =="'"){
         lexString(lexer);
     }
+
+    switch (current){
+        case '+':
+            if(match(lexer, '+')) return createToken(lexer, TOKEN_INCREMENT, (TokenData){0}, "++");
+            if(match(lexer, '=')) return createToken(lexer, TOKEN_ADD_ASSIGNMENT, (TokenData){0}, "+=");
+            return createToken(lexer, TOKEN_PLUS, (TokenData){0}, "+");
+        case '-':
+            if(match(lexer, '-')) return createToken(lexer, TOKEN_DECREMENT, (TokenData){0}, "--");
+            if(match(lexer, '=')) return createToken(lexer, TOKEN_SUB_ASSIGNMENT, (TokenData){0}, "-=");
+            return createToken(lexer, TOKEN_MINUS, (TokenData){0}, "-");
+        case '*':
+            if(match(lexer, '=')) return createToken(lexer, TOKEN_MUL_ASSIGNMENT, (TokenData){0}, "*=");
+            return createToken(lexer, TOKEN_STAR, (TokenData){0}, "*");
+        case '/':
+            if(match(lexer, '=')) return createToken(lexer, TOKEN_DIV_ASSIGNMENT, (TokenData){0}, "/=");
+            return createToken(lexer, TOKEN_SLASH, (TokenData){0}, "/");
+        case '%':
+            if(match(lexer, '=')) return createToken(lexer, TOKEN_MOD_ASSIGNMENT, (TokenData){0}, "%=");
+            return createToken(lexer, TOKEN_PERCENT, (TokenData){0}, "%");
+        case '=':
+            if(match(lexer, '=')) return createToken(lexer, TOKEN_EQUAL, (TokenData){0}, "==");
+            return createToken(lexer, TOKEN_ASSIGNMENT, (TokenData){0}, "=");
+        case '!':
+            if(match(lexer, '=')) return createToken(lexer, TOKEN_NOT_EQUAL, (TokenData){0}, "!=");
+            return createToken(lexer, TOKEN_NOT, (TokenData){0}, "!");
+        case '<':
+            if(match(lexer, '=')) return createToken(lexer, TOKEN_LESS_EQUAL_THAN, (TokenData){0}, "<=");
+            return createToken(lexer, TOKEN_LESS_THAN, (TokenData){0}, "<");
+        case '>':
+            if(match(lexer, '=')) return createToken(lexer, TOKEN_GREATER_EQUAL_THAN, (TokenData){0}, ">=");
+            return createToken(lexer, TOKEN_GREATER_THAN, (TokenData){0}, ">");
+        // add more in the future...
+    default:
+        break;
+    }
 }
