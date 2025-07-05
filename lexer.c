@@ -165,7 +165,7 @@ Token lexIdentifier(Lexer *lexer){
     KeyWord("char", TOKEN_CHAR);
     KeyWord("uchar", TOKEN_UNSIGNED_CHAR);
     KeyWord("string", TOKEN_STRING);
-    
+
     KeyWord("arch", TOKEN_ARCH);
     KeyWord("uarch", TOKEN_UNSIGNED_ARCH);
 
@@ -214,7 +214,6 @@ Token lexIdentifier(Lexer *lexer){
     KeyWord("memcpy", TOKEN_MEMCPY);
     KeyWord("memset", TOKEN_MEMSET);
     KeyWord("memmove", TOKEN_MEMMOVE);
-    // gonna continue soon to add new keywords
     #undef KeyWord;
 
     TokenData data = {0};
@@ -225,4 +224,30 @@ Token lexIdentifier(Lexer *lexer){
     Token token = createToken(lexer, type, data, text);
     free(text);
     return token;
+}
+
+Token nextToken(Lexer *lexer){
+    skipWhiteSpace(lexer);
+
+    if(isAtEnd(lexer)){
+        return createToken(lexer, TOKEN_EOF, (TokenData){0}, "");
+    }
+
+    char current = advance(lexer);
+
+    if(isalpha(current) || current == '_'){
+        lexer->pos--;
+        lexer->column--;
+        return lexIdentifier(lexer);
+    }
+
+    if(isdigit(current)){
+        lexer->pos--;
+        lexer->column--;
+        return lexNumber(lexer);
+    }
+
+    if(current == '"' || current =="'"){
+        lexString(lexer);
+    }
 }

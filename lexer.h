@@ -131,7 +131,9 @@ typedef enum {
 
     TOKEN_MEMCPY,               // memcpy
     TOKEN_MEMSET,               // memset
-    TOKEN_MEMMOVE               // memmove
+    TOKEN_MEMMOVE,              // memmove
+
+    TOKEN_EOF                   // eof
 } TokenType;
 
 typedef struct {
