@@ -251,7 +251,7 @@ Token nextToken(Lexer *lexer){
         lexString(lexer);
     }
 
-    switch (current){
+    switch(current){
         case '+':
             if(match(lexer, '+')) return createToken(lexer, TOKEN_INCREMENT, (TokenData){0}, "++");
             if(match(lexer, '=')) return createToken(lexer, TOKEN_ADD_ASSIGNMENT, (TokenData){0}, "+=");
@@ -277,10 +277,29 @@ Token nextToken(Lexer *lexer){
             return createToken(lexer, TOKEN_NOT, (TokenData){0}, "!");
         case '<':
             if(match(lexer, '=')) return createToken(lexer, TOKEN_LESS_EQUAL_THAN, (TokenData){0}, "<=");
+            if(match(lexer, '<')){
+                if(match(lexer, '=')) return createToken(lexer, TOKEN_SHIFT_LEFT_ASSIGN, (TokenData){0}, "<<=");
+                return createToken(lexer, TOKEN_SHIFT_LEFT, (TokenData){0}, "<<");
+            }
             return createToken(lexer, TOKEN_LESS_THAN, (TokenData){0}, "<");
         case '>':
             if(match(lexer, '=')) return createToken(lexer, TOKEN_GREATER_EQUAL_THAN, (TokenData){0}, ">=");
+            if(match(lexer, '>')){
+                if(match(lexer, '=')) return createToken(lexer, TOKEN_SHIFT_RIGHT_ASSIGN, (TokenData){0}, ">>=");
+                return createToken(lexer, TOKEN_SHIFT_RIGHT, (TokenData){0}, ">>");
+            }
             return createToken(lexer, TOKEN_GREATER_THAN, (TokenData){0}, ">");
+        case '&':
+            if(match(lexer, '&')) return createToken(lexer, TOKEN_AND, (TokenData){0}, "&&");
+            if(match(lexer, '=')) return createToken(lexer, TOKEN_BITWISE_AND_ASSIGN, (TokenData){0}, "&=");
+            return createToken(lexer, TOKEN_BITWISE_AND, (TokenData){0}, "&");
+        case '|':
+            if(match(lexer, '|')) return createToken(lexer, TOKEN_OR, (TokenData){0}, "||");
+            return createToken(lexer, TOKEN_BITWISE_OR, (TokenData){0}, "|");
+        case '^':
+            return createToken(lexer, TOKEN_BITWISE_XOR, (TokenData){0}, "^");
+        case '~':
+            return createToken(lexer, TOKEN_BITWISE_NOT, (TokenData){0}, "~");
         // add more in the future...
     default:
         break;
