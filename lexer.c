@@ -259,6 +259,7 @@ Token nextToken(Lexer *lexer){
         case '-':
             if(match(lexer, '-')) return createToken(lexer, TOKEN_DECREMENT, (TokenData){0}, "--");
             if(match(lexer, '=')) return createToken(lexer, TOKEN_SUB_ASSIGNMENT, (TokenData){0}, "-=");
+            if(match(lexer, ">")) return createToken(lexer, TOKEN_ARROW, (TokenData){0}, "->");
             return createToken(lexer, TOKEN_MINUS, (TokenData){0}, "-");
         case '*':
             if(match(lexer, '=')) return createToken(lexer, TOKEN_MUL_ASSIGNMENT, (TokenData){0}, "*=");
@@ -300,6 +301,10 @@ Token nextToken(Lexer *lexer){
             return createToken(lexer, TOKEN_BITWISE_XOR, (TokenData){0}, "^");
         case '~':
             return createToken(lexer, TOKEN_BITWISE_NOT, (TokenData){0}, "~");
+        case '?':
+            return createToken(lexer, TOKEN_QUESTION, (TokenData){0}, "?");
+        case ':':
+            return createToken(lexer, TOKEN_COLON, (TokenData){0}, ":");
         // add more in the future...
     default:
         break;
