@@ -247,8 +247,8 @@ Token nextToken(Lexer *lexer){
         return lexNumber(lexer);
     }
 
-    if(current == '"' || current =="'"){
-        lexString(lexer);
+    if(current == '"' || current =='\''){
+        return lexString(lexer);
     }
 
     switch(current){
@@ -305,8 +305,25 @@ Token nextToken(Lexer *lexer){
             return createToken(lexer, TOKEN_QUESTION, (TokenData){0}, "?");
         case ':':
             return createToken(lexer, TOKEN_COLON, (TokenData){0}, ":");
-        // add more in the future...
-    default:
-        break;
+        case '(':
+            return createToken(lexer, TOKEN_LPAREN, (TokenData){0}, "(");
+        case ')':
+            return createToken(lexer, TOKEN_RPAREN, (TokenData){0}, ")");
+        case '{':
+            return createToken(lexer, TOKEN_LBRACE, (TokenData){0}, "{");
+        case '}':
+            return createToken(lexer, TOKEN_RBRACE, (TokenData){0}, "}");
+        case '[':
+            return createToken(lexer, TOKEN_LBRACKET, (TokenData){0}, "[");
+        case ']':
+            return createToken(lexer, TOKEN_RBRACKET, (TokenData){0}, "]");
+        case ',':
+            return createToken(lexer, TOKEN_COMMA, (TokenData){0}, ",");
+        case '.':
+            return createToken(lexer, TOKEN_DOT, (TokenData){0}, ".");
+        case ';':
+            return createToken(lexer, TOKEN_SEMICOLON, (TokenData){0}, ";");
+        default:
+            return createToken(lexer, TOKEN_NULL, (TokenData){0}, "");
     }
 }
