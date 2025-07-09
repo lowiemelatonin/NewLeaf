@@ -323,6 +323,8 @@ Token nextToken(Lexer *lexer){
             return createToken(lexer, TOKEN_DOT, (TokenData){0}, ".");
         case ';':
             return createToken(lexer, TOKEN_SEMICOLON, (TokenData){0}, ";");
+        case '\\':
+            return createToken(lexer, TOKEN_BACKSLASH, (TokenData){0}, "\\");
         default:
             return createToken(lexer, TOKEN_NULL, (TokenData){0}, "");
     }

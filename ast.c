@@ -707,6 +707,7 @@ ASTNode *createImportNode(char *libName){
         free(node);
         return NULL;
     }
+    return node;
 }
 
 void freeAST(ASTNode *node){
