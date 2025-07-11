@@ -162,5 +162,6 @@ typedef struct {
 
 Token createToken(Lexer *lexer, TokenType type, TokenData data, char *lexeme);
 void initLexer(Lexer *lexer, char *src);
+Token nextToken(Lexer *lexer);
 
 #endif
