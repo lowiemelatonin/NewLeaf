@@ -12,5 +12,5 @@ void initParser(Parser *parser, Lexer *lexer);
 void advance(Parser *parser);
 ASTNode *parseExpression(Parser *parser);
 ASTNode *parsePrimaryExpression(Parser *parser);
-
+ASTNode *parseBinaryExpression(Parser *parser, int minPrecedence);
 #endif
