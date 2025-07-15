@@ -38,27 +38,55 @@ void advance(Parser *parser){
 
 ASTNode *parsePrimaryExpression(Parser *parser){
     Token token = parser->current;
+    ASTNode *expr = NULL;
     switch(token.type){
         case TOKEN_IDENTIFIER: {
             advance(parser);
-            return createIdentifierNode(token.data.identifier);
+            expr = createIdentifierNode(token.data.identifier); 
+            break;
         }
         case TOKEN_NUMBER:
         case TOKEN_STRING_LITERAL: {
             advance(parser);
-            return(createLiteralNode(token.data.literal.type, token.data.literal.value));
+            expr = createLiteralNode(token.data.literal.type, token.data.literal.value);
+            break;
         }
         case TOKEN_LPAREN: {
             advance(parser);
-            ASTNode *expr = parseExpression(parser);
+            expr = parseExpression(parser);
             if(parser->current.type != TOKEN_RPAREN){
                 return NULL;
             }
             advance(parser);
-            return expr;
+            break;
         }
     default:
         return NULL;
+    }
+
+    if(parser->current.type == TOKEN_INCREMENT || parser->current.type == TOKEN_DECREMENT){
+        TokenType opToken = parser->current.type;
+        advance(parser);
+
+        UnaryOpType op = tokenToUnaryOp(opToken, false);
+        expr = createUnaryOpNode(expr, op);
+    }
+    return expr;
+}
+
+UnaryOpType tokenToUnaryOp(TokenType type, bool isPrefix){
+    switch(type){
+        case TOKEN_PLUS: return POSITIVE_UNOP;
+        case TOKEN_MINUS: return NEGATIVE_UNOP;
+        case TOKEN_NOT: return NOT_UNOP;
+        case TOKEN_BITWISE_NOT: return BIT_NOT_UNOP;
+        case TOKEN_INCREMENT: return isPrefix ? PRE_INCREMENT_UNOP : POST_INCREMENT_UNOP;
+        case TOKEN_DECREMENT: return isPrefix ? PRE_DECREMENT_UNOP : POST_DECREMENT_UNOP;
+        case TOKEN_STAR: return DEFERENCE_UNOP;
+        case TOKEN_BITWISE_AND: return ADDRESS_OF_UNOP;
+        case TOKEN_SIZEOF: return SIZE_OF_UNOP;    
+    default:
+        return POSITIVE_UNOP;
     }
 }
 
@@ -77,13 +105,35 @@ BinaryOpType tokenToBinaryOp(TokenType type){
         case TOKEN_LESS_EQUAL_THAN: return LESS_EQU_BINOP;
         case TOKEN_GREATER_THAN: return GREATER_BINOP;
         case TOKEN_GREATER_EQUAL_THAN: return GREATER_EQU_BINOP;
-        default:
-            return COMMA_BINOP; 
+    default:
+        return COMMA_BINOP; 
+    }
+}
+
+ASTNode *parseUnaryExpression(Parser *parser){
+    Token token = parser->current;
+    switch(token.type){
+        case TOKEN_PLUS:
+        case TOKEN_MINUS:
+        case TOKEN_NOT:
+        case TOKEN_BITWISE_NOT:
+        case TOKEN_INCREMENT:
+        case TOKEN_DECREMENT:
+        case TOKEN_STAR:
+        case TOKEN_BITWISE_AND:
+        case TOKEN_SIZEOF:
+            advance(parser);
+            UnaryOpType op = tokenToUnaryOp(token.type, true);
+            ASTNode *expr = parseUnaryExpression(parser);
+            if(!expr) return NULL;
+            return createUnaryOpNode(expr, op);
+    default:
+        return parsePrimaryExpression(parser);
     }
 }
 
 ASTNode *parseBinaryExpression(Parser *parser, int minPrecedence){
-    ASTNode *left = parsePrimaryExpression(parser);
+    ASTNode *left = parseUnaryExpression(parser);
     if(!left) return NULL;
     
     while(1){
