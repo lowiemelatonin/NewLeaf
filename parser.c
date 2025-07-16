@@ -1,4 +1,6 @@
 #include "parser.h"
+#include <stdlib.h>
+#include <stdbool.h>
 
 int getPrecedence(TokenType type){
     switch(type){
@@ -135,7 +137,7 @@ ASTNode *parseUnaryExpression(Parser *parser){
 ASTNode *parseBinaryExpression(Parser *parser, int minPrecedence){
     ASTNode *left = parseUnaryExpression(parser);
     if(!left) return NULL;
-    
+
     while(1){
         int prec = getPrecedence(parser->current.type);
         if(prec < minPrecedence) break;
@@ -151,6 +153,76 @@ ASTNode *parseBinaryExpression(Parser *parser, int minPrecedence){
         left = createBinaryOpNode(left, right, op);
     }
     return left;
+}
+
+ASTNode *parsePostfixExpression(Parser *parser){
+    ASTNode *expr = parseUnaryExpression(parser);
+    if(!expr) return NULL;
+
+    while(1){
+        Token token = parser->current;
+        switch(token.type){
+            case TOKEN_LPAREN: {
+                advance(parser);
+
+                ASTNode **args = NULL;
+                int argsCount = 0;
+
+                if(parser->current.type != TOKEN_RPAREN){
+                    while(1){
+                        ASTNode *arg = parseExpression(parser);
+                        if(!arg) return NULL;
+
+                        args = realloc(args, sizeof(ASTNode *) * (argsCount + 1));
+                        args[argsCount++] = arg;
+
+                        if(parser->current.type == TOKEN_COMMA){
+                            advance(parser);
+                        } else{
+                            break;
+                        }
+                    }
+                }
+                if(parser->current.type != TOKEN_RPAREN) return NULL;
+                advance(parser);
+                expr = createFunctionCallNode(expr, args, argsCount);
+                break;
+            }
+
+            case TOKEN_LBRACKET: {
+                advance(parser);
+                ASTNode *index = parseExpression(parser);
+                if(!index) return NULL;
+                if(parser->current.type != TOKEN_RBRACKET) return NULL;
+                advance(parser);
+
+                expr = createArrayAccessNode(expr, index);
+                break;
+            }
+
+            case TOKEN_DOT: {
+                advance(parser);
+                if(parser->current.type != TOKEN_IDENTIFIER) return NULL;
+                char *field = parser->current.data.identifier;
+                advance(parser);
+
+                expr = createFieldAccessNode(expr, field, false);
+                break;
+            }
+
+            case TOKEN_ARROW: {
+                advance(parser);
+                if(parser->current.type != TOKEN_IDENTIFIER) return NULL;
+                char *field = parser->current.data.identifier;
+                advance(parser);
+
+                expr = createFieldAccessNode(expr, field, true);
+                break;
+            }
+            default: 
+                return expr;
+        }
+    }
 }
 
 ASTNode *parseExpression(Parser *parser){
