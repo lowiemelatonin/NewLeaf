@@ -11,7 +11,8 @@ typedef struct {
 void initParser(Parser *parser, Lexer *lexer);
 void advance(Parser *parser);
 ASTNode *parseExpression(Parser *parser);
-ASTNode *parseUnaryExpression(Parser *parser); // to implement...
+ASTNode *parseUnaryExpression(Parser *parser);
 ASTNode *parsePrimaryExpression(Parser *parser);
 ASTNode *parseBinaryExpression(Parser *parser, int minPrecedence);
+ASTNode *parsePostfixExpression(Parser *parser);
 #endif
