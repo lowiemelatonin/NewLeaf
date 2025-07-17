@@ -246,6 +246,64 @@ ASTNode *parsePostfixExpression(Parser *parser){
     }
 }
 
+ASTNode *parseExpressionStatement(Parser *parser){
+    ASTNode *expr = parseExpression(parser);
+    if(!expr) return NULL;
+
+    if(parser->current.type != TOKEN_SEMICOLON) return NULL;
+
+    advance(parser);
+    return expr;
+}
+
+ASTNode *parseBlockStatement(Parser *parser){
+    if(parser->current.type != TOKEN_LBRACE) return NULL;
+    advance(parser);
+
+    ASTNode **statements = NULL;
+    int count = 0;
+
+    while(parser->current.type != TOKEN_RBRACE && parser->current.type != TOKEN_EOF){
+        ASTNode *stmt = parseStatement(parser);
+        if(!stmt) return NULL;
+
+        statements = realloc(statements, sizeof(ASTNode *) * (count + 1));
+        statements[count++] = stmt;
+    }
+
+    if(parser->current.type != TOKEN_RBRACE) return NULL;
+    advance(parser);
+    return createBlockNode(statements, count);
+}
+
+ASTNode *parseReturnStatement(Parser *parser){
+    if(parser->current.type != TOKEN_RETURN) return NULL;
+    advance(parser);
+
+    ASTNode *expr = NULL;
+    if(parser->current.type != TOKEN_SEMICOLON){
+        expr = parseExpression(parser);
+        if(!expr) return NULL;
+    }
+
+    if(parser->current.type != TOKEN_SEMICOLON) return NULL;
+    advance(parser);
+
+    return createReturnNode(expr);
+}
+
+ASTNode *parseStatement(Parser *parser){
+    switch(parser->current.type){
+        case TOKEN_LBRACE:
+            return parseBlockStatement(parser);
+        case TOKEN_RETURN:
+            return parseReturnStatement(parser);
+
+        default:
+            return parseExpressionStatement(parser);
+    }
+}
+
 ASTNode *parseExpression(Parser *parser){
-    return parseBinaryExpression(parser, 0);
+    return parseTernaryExpression(parser);
 }

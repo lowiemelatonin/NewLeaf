@@ -16,4 +16,9 @@ ASTNode *parsePrimaryExpression(Parser *parser);
 ASTNode *parseBinaryExpression(Parser *parser, int minPrecedence);
 ASTNode *parseTernaryExpression(Parser *parser);
 ASTNode *parsePostfixExpression(Parser *parser);
+
+ASTNode *parseExpressionStatement(Parser *parser);
+ASTNode *parseBlockStatement(Parser *parser);
+ASTNode *parseReturnStatement(Parser *parser);
+ASTNode *parseStatement(Parser *parser);
 #endif
