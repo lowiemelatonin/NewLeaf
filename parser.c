@@ -155,6 +155,27 @@ ASTNode *parseBinaryExpression(Parser *parser, int minPrecedence){
     return left;
 }
 
+ASTNode *parseTernaryExpression(Parser *parser){
+    ASTNode *condition = parseBinaryExpression(parser, 0);
+    if(!condition) return NULL;
+
+    if(parser->current.type == TOKEN_QUESTION){
+        advance(parser);
+
+        ASTNode *trueExpr = parseExpression(parser);
+        if(!trueExpr) return NULL;
+
+        if(parser->current.type != TOKEN_COLON) return NULL;
+        advance(parser);
+
+        ASTNode *falseExpr = parseExpression(parser);
+        if(!falseExpr) return NULL;
+
+        return createTernaryOpNode(condition, trueExpr, falseExpr);
+    }
+    return condition;
+}
+
 ASTNode *parsePostfixExpression(Parser *parser){
     ASTNode *expr = parseUnaryExpression(parser);
     if(!expr) return NULL;

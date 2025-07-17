@@ -14,5 +14,6 @@ ASTNode *parseExpression(Parser *parser);
 ASTNode *parseUnaryExpression(Parser *parser);
 ASTNode *parsePrimaryExpression(Parser *parser);
 ASTNode *parseBinaryExpression(Parser *parser, int minPrecedence);
+ASTNode *parseTernaryExpression(Parser *parser);
 ASTNode *parsePostfixExpression(Parser *parser);
 #endif
