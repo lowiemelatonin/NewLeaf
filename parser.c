@@ -292,13 +292,40 @@ ASTNode *parseReturnStatement(Parser *parser){
     return createReturnNode(expr);
 }
 
+ASTNode *parseIfStatement(Parser *parser){
+    if(parser->current.type != TOKEN_IF) return NULL;
+    advance(parser);
+
+    if(parser->current.type != TOKEN_LPAREN) return NULL;
+    advance(parser);
+
+    ASTNode *condition = parseExpression(parser);
+    if(!condition) return NULL;
+
+    if(parser->current.type != TOKEN_RPAREN) return NULL;
+    advance(parser);
+
+    ASTNode *thenBranch = parseStatement(parser);
+    if(!thenBranch) return NULL;
+
+    ASTNode *elseBranch = NULL;
+    if(parser->current.type == TOKEN_ELSE){
+        advance(parser);
+        elseBranch = parseStatement(parser);
+        if(!elseBranch) return NULL;
+    }
+
+    return createIfStmtNode(condition, thenBranch, elseBranch);
+}
+
 ASTNode *parseStatement(Parser *parser){
     switch(parser->current.type){
         case TOKEN_LBRACE:
             return parseBlockStatement(parser);
         case TOKEN_RETURN:
             return parseReturnStatement(parser);
-
+        case TOKEN_IF:
+            return parseIfStatement(parser);
         default:
             return parseExpressionStatement(parser);
     }

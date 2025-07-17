@@ -20,5 +20,6 @@ ASTNode *parsePostfixExpression(Parser *parser);
 ASTNode *parseExpressionStatement(Parser *parser);
 ASTNode *parseBlockStatement(Parser *parser);
 ASTNode *parseReturnStatement(Parser *parser);
+ASTNode *parseIfStatement(Parser *parser);
 ASTNode *parseStatement(Parser *parser);
 #endif
