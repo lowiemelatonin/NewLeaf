@@ -21,5 +21,6 @@ ASTNode *parseExpressionStatement(Parser *parser);
 ASTNode *parseBlockStatement(Parser *parser);
 ASTNode *parseReturnStatement(Parser *parser);
 ASTNode *parseIfStatement(Parser *parser);
+ASTNode *parseWhileStatement(Parser *parser);
 ASTNode *parseStatement(Parser *parser);
 #endif

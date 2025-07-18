@@ -318,6 +318,29 @@ ASTNode *parseIfStatement(Parser *parser){
     return createIfStmtNode(condition, thenBranch, elseBranch);
 }
 
+ASTNode *parseWhileStatement(Parser *parser){
+    if(parser->current.type != TOKEN_WHILE) return NULL;
+    advance(parser);
+
+    if(parser->current.type != TOKEN_LPAREN) return NULL;
+    advance(parser);
+
+    ASTNode *condition = parseExpression(parser);
+    if(!condition) return NULL;
+
+    if(parser->current.type != TOKEN_RPAREN) return NULL;
+    advance(parser);
+
+    ASTNode *body = parseStatement(parser);
+    if(!body) return NULL;
+
+    ASTNode **bodyArr = malloc(sizeof(ASTNode*));
+    if(!bodyArr) return NULL;
+    bodyArr[0] = body;
+
+    return createWhileStmtNode(condition, bodyArr, 1);
+}
+
 ASTNode *parseStatement(Parser *parser){
     switch(parser->current.type){
         case TOKEN_LBRACE:
@@ -326,6 +349,8 @@ ASTNode *parseStatement(Parser *parser){
             return parseReturnStatement(parser);
         case TOKEN_IF:
             return parseIfStatement(parser);
+        case TOKEN_WHILE:
+            return parseWhileStatement(parser);
         default:
             return parseExpressionStatement(parser);
     }
