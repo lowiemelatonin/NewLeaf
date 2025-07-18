@@ -17,10 +17,10 @@ ASTNode *parseBinaryExpression(Parser *parser, int minPrecedence);
 ASTNode *parseTernaryExpression(Parser *parser);
 ASTNode *parsePostfixExpression(Parser *parser);
 
-ASTNode *parseExpressionStatement(Parser *parser);
-ASTNode *parseBlockStatement(Parser *parser);
-ASTNode *parseReturnStatement(Parser *parser);
-ASTNode *parseIfStatement(Parser *parser);
-ASTNode *parseWhileStatement(Parser *parser);
-ASTNode *parseStatement(Parser *parser);
+ASTNode *parseExpressionStmt(Parser *parser);
+ASTNode *parseBlockStmt(Parser *parser);
+ASTNode *parseReturnStmt(Parser *parser);
+ASTNode *parseIfStmt(Parser *parser);
+ASTNode *parseWhileStmt(Parser *parser);
+ASTNode *parseStmt(Parser *parser);
 #endif

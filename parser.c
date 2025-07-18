@@ -246,7 +246,7 @@ ASTNode *parsePostfixExpression(Parser *parser){
     }
 }
 
-ASTNode *parseExpressionStatement(Parser *parser){
+ASTNode *parseExpressionStmt(Parser *parser){
     ASTNode *expr = parseExpression(parser);
     if(!expr) return NULL;
 
@@ -256,7 +256,7 @@ ASTNode *parseExpressionStatement(Parser *parser){
     return expr;
 }
 
-ASTNode *parseBlockStatement(Parser *parser){
+ASTNode *parseBlockStmt(Parser *parser){
     if(parser->current.type != TOKEN_LBRACE) return NULL;
     advance(parser);
 
@@ -276,7 +276,7 @@ ASTNode *parseBlockStatement(Parser *parser){
     return createBlockNode(statements, count);
 }
 
-ASTNode *parseReturnStatement(Parser *parser){
+ASTNode *parseReturnStmt(Parser *parser){
     if(parser->current.type != TOKEN_RETURN) return NULL;
     advance(parser);
 
@@ -292,7 +292,7 @@ ASTNode *parseReturnStatement(Parser *parser){
     return createReturnNode(expr);
 }
 
-ASTNode *parseIfStatement(Parser *parser){
+ASTNode *parseIfStmt(Parser *parser){
     if(parser->current.type != TOKEN_IF) return NULL;
     advance(parser);
 
@@ -318,7 +318,7 @@ ASTNode *parseIfStatement(Parser *parser){
     return createIfStmtNode(condition, thenBranch, elseBranch);
 }
 
-ASTNode *parseWhileStatement(Parser *parser){
+ASTNode *parseWhileStmt(Parser *parser){
     if(parser->current.type != TOKEN_WHILE) return NULL;
     advance(parser);
 
@@ -341,18 +341,92 @@ ASTNode *parseWhileStatement(Parser *parser){
     return createWhileStmtNode(condition, bodyArr, 1);
 }
 
-ASTNode *parseStatement(Parser *parser){
+ASTNode *parseForStmt(Parser *parser){
+    if(parser->current.type != TOKEN_FOR) return NULL;
+    advance(parser);
+
+    if(parser->current.type != TOKEN_LPAREN) return NULL;
+    advance(parser);
+
+    ASTNode *initializer = NULL;
+    if(parser->current.type != TOKEN_SEMICOLON){
+        initializer = parseExpression(parser);
+        if(!initializer) return NULL;
+    }
+    if(parser->current.type != TOKEN_SEMICOLON) return NULL;
+    advance(parser);
+
+    ASTNode *condition = NULL;
+    if(parser->current.type != TOKEN_SEMICOLON){
+        condition = parseExpression(parser);
+        if(!condition) return NULL;
+    }
+    if(parser->current.type != TOKEN_SEMICOLON) return NULL;
+    advance(parser);
+
+    ASTNode *increment = NULL;
+    if(parser->current.type != TOKEN_RPAREN){
+        increment = parseExpression(parser);
+        if(!increment) return NULL;
+    }
+    if(parser->current.type != TOKEN_RPAREN) return NULL;
+    advance(parser);
+
+    ASTNode *body = parseStmt(parser);
+    if(!body) return NULL;
+
+    ASTNode **bodyArr = malloc(sizeof(ASTNode *));
+    if(!bodyArr) return NULL;
+    bodyArr[0] = body;
+    
+    return createForStmtNode(initializer, condition, increment, bodyArr, 1);
+}
+
+ASTNode *parseDoWhileStmt(Parser *parser){
+    if(parser->current.type != TOKEN_DO) return NULL;
+    advance(parser);
+
+    ASTNode *body = parseStatement(parser);
+    if(!body) return NULL;
+
+    ASTNode **bodyArr = malloc(sizeof(ASTNode*));
+    if(!bodyArr) return NULL;
+    bodyArr[0] = body;
+
+    if(parser->current.type != TOKEN_WHILE) return NULL;
+    advance(parser);
+
+    if(parser->current.type != TOKEN_LPAREN) return NULL;
+    advance(parser);
+
+    ASTNode *condition = parseExpression(parser);
+    if(!condition) return NULL;
+
+    if(parser->current.type != TOKEN_RPAREN) return NULL;
+    advance(parser);
+
+    if(parser->current.type != TOKEN_SEMICOLON) return NULL;
+    advance(parser);
+
+    return createDoWhileStmtNode(condition, bodyArr, 1);
+}
+
+ASTNode *parseStmt(Parser *parser){
     switch(parser->current.type){
         case TOKEN_LBRACE:
-            return parseBlockStatement(parser);
+            return parseBlockStmt(parser);
         case TOKEN_RETURN:
-            return parseReturnStatement(parser);
+            return parseReturnStmt(parser);
         case TOKEN_IF:
-            return parseIfStatement(parser);
+            return parseIfStmt(parser);
         case TOKEN_WHILE:
-            return parseWhileStatement(parser);
+            return parseWhileStmt(parser);
+        case TOKEN_FOR:
+            return parseForStmt(parser);
+        case TOKEN_DO:
+            return parseDoWhileStmt(parser);
         default:
-            return parseExpressionStatement(parser);
+            return parseExpressionStmt(parser);
     }
 }
 
