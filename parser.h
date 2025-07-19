@@ -23,4 +23,6 @@ ASTNode *parseReturnStmt(Parser *parser);
 ASTNode *parseIfStmt(Parser *parser);
 ASTNode *parseWhileStmt(Parser *parser);
 ASTNode *parseStmt(Parser *parser);
+
+ASTNode *parseAssignmentExpr(Parser *parser);
 #endif

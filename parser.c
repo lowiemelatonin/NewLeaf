@@ -430,6 +430,33 @@ ASTNode *parseStmt(Parser *parser){
     }
 }
 
+ASTNode *parseAssignmentExpr(Parser *parser){
+    ASTNode *left = parseTernaryExpression(parser);
+    if(!left) return NULL;
+
+    AssignmentOpType op;
+    switch(parser->current.type){
+        case TOKEN_ASSIGNMENT: op = SIMPLE_ASSIGN; break;
+        case TOKEN_ADD_ASSIGNMENT: op = ADD_AND_ASSIGN; break;
+        case TOKEN_SUB_ASSIGNMENT: op = SUB_AND_ASSIGN; break;
+        case TOKEN_MUL_ASSIGNMENT: op = MUL_AND_ASSIGN; break;
+        case TOKEN_DIV_ASSIGNMENT: op = DIV_AND_ASSIGN; break;
+        case TOKEN_MOD_ASSIGNMENT: op = MOD_AND_ASSIGN; break;
+        case TOKEN_BITWISE_AND_ASSIGN: op = AND_AND_ASSIGN; break;
+        case TOKEN_BITWISE_OR_ASSIGN: op = OR_AND_ASSIGN; break;
+        case TOKEN_BITWISE_XOR_ASSIGN: op = XOR_AND_ASSIGN; break;
+        case TOKEN_SHIFT_LEFT_ASSIGN: op = SHIFT_LEFT_AND_ASSIGN; break;
+        case TOKEN_SHIFT_RIGHT_ASSIGN: op = SHIFT_RIGHT_AND_ASSIGN; break; 
+        default:
+            return left;
+    }
+    advance(parser);
+    ASTNode *right = parseExpression(parser);
+    if(!right) return NULL;
+
+    return createAssignmentNode(left, right, op);
+}
+
 ASTNode *parseExpression(Parser *parser){
-    return parseTernaryExpression(parser);
+    return parseAssignmentExpr(parser);
 }
